@@ -5,7 +5,6 @@ import { createCard } from "../utils/api";
 
 function AddCard() {
     /*This path: /decks/:deckId/cards/new */
-  const title = <h1>React Router: Add Card</h1>;
   const { deckId } = useParams();
   const history = useHistory();
 
@@ -38,6 +37,8 @@ function AddCard() {
     return () => abortController.abort();
   };
 
+  const title = <h1>React Router: Add Card</h1>;
+  
   const form = (
     <form onSubmit={handleSubmit}>
       <label htmlFor="front">Front</label>

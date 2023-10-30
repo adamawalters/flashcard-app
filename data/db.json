@@ -7,41 +7,32 @@
     },
     {
       "name": "React Router",
-      "description": "React Router is a collection of navigational components that compose declaratively with your application. edited2",
+      "description": "React Router is a collection of navigational components that compose declaratively with your application.",
       "id": 2
     },
     {
-      "name": "new deck 1",
-      "description": "new deck 1 desc",
+      "name": "MyDeck",
+      "description": "mydeckismydeck",
       "id": 3
-    },
-    {
-      "name": "nd2",
-      "description": "nd2d",
-      "id": 4
-    },
-    {
-      "name": "nd4",
-      "description": "nd4d",
-      "id": 5
-    },
-    {
-      "name": "nd5",
-      "description": "nd5",
-      "id": 6
     }
   ],
   "cards": [
     {
       "id": 1,
       "front": "Differentiate between Real DOM and Virtual DOM.",
-      "back": "Virtual DOM updates are faster but do not directly update the HTML",
+      "back": "Virtual DOM updates are faster but do not directly update the HTML, do they?",
       "deckId": 1
     },
     {
       "id": 2,
       "front": "How do you modify the state of a different React component?",
       "back": "Not at all! State is visible to the component only.",
+      "deckId": 1
+    },
+    {
+      "id": 3,
+      "front": "How do you pass data 'down' to a React child component?",
+      "back": "As properties or props",
       "deckId": 1
     },
     {
@@ -64,15 +55,15 @@
       "id": 7
     },
     {
-      "front": "newcard1",
-      "back": "ncb1",
-      "deckId": 6,
+      "front": "mydeckcard1",
+      "back": "mydeckcard1back",
+      "deckId": 3,
       "id": 8
     },
     {
-      "front": "front2",
-      "back": "back2",
-      "deckId": 6,
+      "front": "mydeckcard2",
+      "back": "mydeckcard2back",
+      "deckId": 3,
       "id": 9
     }
   ]
