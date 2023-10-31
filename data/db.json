@@ -2,45 +2,20 @@
   "decks": [
     {
       "id": 1,
-      "name": "Rendering in React isimportant",
-      "description": "React's component structure allows fodsafdsar quickly building a complex web application that relies on DOM manipulation."
+      "name": "Rendering in React isimportantfdaf",
+      "description": "React's component structure allofdaws fodsafdsar quickly building a complex web application that relies on DOM manipulation."
     },
     {
       "name": "React Router",
       "description": "React Router is a collection of navigational components that compose declaratively with your application.",
       "id": 2
-    },
-    {
-      "name": "this is a new deck!!!!",
-      "description": "new now",
-      "id": 4
-    },
-    {
-      "name": "afdsafd",
-      "description": "fdafdsaf",
-      "id": 6
-    },
-    {
-      "name": "teaste dafdsa",
-      "description": "teav fdsad",
-      "id": 7
-    },
-    {
-      "name": "adfa",
-      "description": "fadfda",
-      "id": 8
-    },
-    {
-      "name": "fdsafdsafdsaf",
-      "description": "fdasfdsafdsafdsa",
-      "id": 9
     }
   ],
   "cards": [
     {
       "id": 1,
-      "front": "Differentiate between Real DOM and Virfdsaftual DOM.dfafd",
-      "back": "Virtual DOM updates are faster but do not directly update the HTMLdfadffdfdafdfdaafds",
+      "front": "Differentiate between Real DOM and Vdafdasirfdsaftual DOM.dfafd",
+      "back": "Virtual DOM updates are faster but ddafdsfo not directly update the HTMLdfadffdfdafdfdaafds",
       "deckId": 1
     },
     {
@@ -74,12 +49,6 @@
       "id": 7
     },
     {
-      "front": "teat",
-      "back": "ea",
-      "deckId": 7,
-      "id": 13
-    },
-    {
       "front": "afda",
       "back": "fdas",
       "deckId": 1,
@@ -96,6 +65,18 @@
       "back": "fad",
       "deckId": 1,
       "id": 16
+    },
+    {
+      "front": "sfdafd",
+      "back": "fdafds",
+      "deckId": 1,
+      "id": 17
+    },
+    {
+      "front": "fdaf",
+      "back": "fda",
+      "deckId": 1,
+      "id": 18
     }
   ]
 }

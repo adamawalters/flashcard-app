@@ -53,6 +53,7 @@ function Layout() {
       /* deletes deck from database using API call*/
       const abortController = new AbortController();
       await deleteDeck(deckIdToDelete, abortController.signal);
+      setDeckRerender((currentValue)=>!currentValue)
       history.push(`/`);
 
       
