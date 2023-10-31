@@ -5,10 +5,18 @@ import { createCard, readDeck } from "../utils/api";
 
 function AddCard() {
     /*This path: /decks/:deckId/cards/new */
+    /*Objective: lets users add cards to a deck one card at a time with a form for the front & back of the card. */
+
+  /*Need deck ID from the parameter to know where to post the card */
   const { deckId } = useParams();
+
+  /*Need history to navigate back to the decks page after clicking Done */
   const history = useHistory();
+
+  /*Need the deck data from the server to access deck name for the title & breadcrumb */
   const [deck, setDeck] = useState({});
 
+  /*State to keep form data & form values in sync */
   const initialFormData = {
     front: "",
     back: "",
@@ -19,6 +27,7 @@ function AddCard() {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
+  /* When form is submitted, create the card via API call and reset form data */
   const handleSubmit = (event) => {
     event.preventDefault();
     const abortController = new AbortController();
@@ -38,6 +47,7 @@ function AddCard() {
     return () => abortController.abort();
   };
 
+  /*Read deck from API */
   const readDeckFromAPI = () => {
     setDeck({});
     const abortController = new AbortController();
@@ -92,6 +102,7 @@ function AddCard() {
             placeholder="Front side of card"
             value={formData.front}
             onChange={handleChange}
+            required
           ></textarea>
           <label htmlFor="back">Back</label>
           <textarea
@@ -101,6 +112,7 @@ function AddCard() {
             placeholder="Back side of card"
             value={formData.back}
             onChange={handleChange}
+            required
           ></textarea>
           <button className="btn btn-secondary" onClick={()=>history.push(`/decks/${deckId}`)} type="button">
             Done
@@ -112,11 +124,11 @@ function AddCard() {
       );
 
       return (
-        <div>
+        <main>
           {breadcrumb}
           {title}
           {form}
-        </div>
+        </main>
       );
     }
 

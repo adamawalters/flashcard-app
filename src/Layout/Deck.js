@@ -4,12 +4,14 @@ import {
   useRouteMatch,
   Link,
 } from "react-router-dom/cjs/react-router-dom.min";
-import { deleteCard, readDeck, updateDeck } from "../utils/api";
+import { deleteCard, readDeck } from "../utils/api";
 import DeckTestCard from "./DeckTestCard";
 
 function Deck({ deleteDeckHandler }) {
   /*This path: /decks/:deckId */
   /*Deck state should be at the deck level - home/layout page shows multiple decks*/
+  /*Objective: displays details about the deck as well as each card in the deck,and lets users edit details about the deck, delete the deck, edit the cards, add cards, delete cards */
+
   const [deck, setDeck] = useState({});
   const { deckId } = useParams();
   const { url } = useRouteMatch();
@@ -50,7 +52,6 @@ function Deck({ deleteDeckHandler }) {
       /*Set deck state to the current deck with the updated cards array without the deleted card */
       setDeck({ ...deck, cards: cardsWithoutCard });
 
-      /*still not sure about abortController here */
       const abortController = new AbortController();
 
       /*Remove card from the database via API call */
@@ -69,46 +70,48 @@ function Deck({ deleteDeckHandler }) {
     }
   };
 
-  /*Create header for the deck view - shows details about the deck */
-  const deckHeader = (
-    <div className="card" style={{ width: "18rem" }}>
-      <div className="card-body">
-        <h5 className="card-title">{deck.name}</h5>
-        <p className="card-text">{deck.description}</p>
-        <button className="btn btn-secondary">
-          {
-            <Link className="text-reset" to={`${url}/edit`}>
-              Edit
-            </Link>
-          }
-        </button>
-        <button className="btn btn-primary">
-          {
-            <Link className="text-reset" to={`${url}/study`}>
-              Study
-            </Link>
-          }
-        </button>
-        <button className="btn btn-primary">
-          {
-            <Link className="text-reset" to={`${url}/cards/new`}>
-              +Add Cards
-            </Link>
-          }
-        </button>
-        <button
-          className="btn btn-danger"
-          onClick={() => deleteDeckHandler(deckId)}
-        >
-          Delete
-        </button>
-      </div>
-    </div>
-  );
-
   /*If the API call has updated the deck to a deck from the API (therefore it has an id key) - display the deck */
   if (deck.id) {
-    /*This section creates UIs all cards with the responses */
+    /*This section creates UIs all for cards with the questions & responses */
+
+    /*Create header for the deck view - shows details about the deck */
+    const deckHeader = (
+      <div className="card border-0">
+        <div className="card-body px-0">
+          <h5 className="card-title">{deck.name}</h5>
+          <p className="card-text">{deck.description}</p>
+          <div className="card-wrapper">
+            <button className="card-btn btn btn-secondary">
+              {
+                <Link className="text-reset" to={`${url}/edit`}>
+                  Edit
+                </Link>
+              }
+            </button>
+            <button className="card-btn btn btn-primary">
+              {
+                <Link className="text-reset" to={`${url}/study`}>
+                  Study
+                </Link>
+              }
+            </button>
+            <button className="card-btn btn btn-primary">
+              {
+                <Link className="text-reset" to={`${url}/cards/new`}>
+                  +Add Cards
+                </Link>
+              }
+            </button>
+            <button
+              className="card-btn btn btn-danger"
+              onClick={() => deleteDeckHandler(deckId)}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    );
 
     const breadcrumb = (
       <nav aria-label="breadcrumb">
@@ -122,9 +125,8 @@ function Deck({ deleteDeckHandler }) {
         </ol>
       </nav>
     );
-  
 
-
+    /*Create the view for each card (with both front & back to shown on the test view) */
     const deckTestCards = deck.cards.map((card) => {
       return (
         <DeckTestCard
@@ -138,11 +140,12 @@ function Deck({ deleteDeckHandler }) {
     });
 
     return (
-      <>
+      <main>
         {breadcrumb}
         {deckHeader}
+        <h1>Cards</h1>
         {deckTestCards}
-      </>
+      </main>
     );
   }
   return "Loading";

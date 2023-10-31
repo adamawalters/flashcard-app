@@ -7,23 +7,27 @@ function DeckTestCard({ deleteCardHandler, cardId, front, back }) {
   const { url } = useRouteMatch();
 
   const cardUI = (
-    <div className="card" style={{ width: "18rem" }}>
+    <div className="card">
       <div className="card-body">
-        <p className="card-text">{front}</p>
-        <p className="card-text">{back}</p>
-        <button className="btn btn-secondary">
-          {
-            <Link className="text-reset" to={`${url}/cards/${cardId}/edit`}>
-              Edit
-            </Link>
-          }
-        </button>
-        <button
-          className="btn btn-danger"
-          onClick={() => deleteCardHandler(cardId)}
-        >
-          Delete
-        </button>
+        <div className="qtn-wrapper">
+          <p className="card-text qtn-child">{front}</p>
+          <p className="card-text qtn-child">{back}</p>
+        </div>
+        <div className="qtn-btn-wrapper">
+          <button className="btn btn-secondary">
+            {
+              <Link className="text-reset" to={`${url}/cards/${cardId}/edit`}>
+                Edit
+              </Link>
+            }
+          </button>
+          <button
+            className="btn btn-danger"
+            onClick={() => deleteCardHandler(cardId)}
+          >
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   );

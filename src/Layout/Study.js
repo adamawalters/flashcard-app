@@ -3,12 +3,12 @@ import {
   useParams,
   Link,
   useHistory,
-  useRouteMatch,
 } from "react-router-dom/cjs/react-router-dom.min";
 import { readDeck } from "../utils/api";
 
 function Study() {
   /*Path: /decks/:deckId/study */
+  /*Summary: gets deck from URL & API call & lets students study each card in the deck. Front or back is managed via state. Then restarts the program or goes home.  */
 
   /* Need current deck to access the cards. Will be fetched from API. Initially set to blank*/
   const [deck, setDeck] = useState({});
@@ -66,51 +66,56 @@ function Study() {
     }
   };
 
-  
   /* Once deck has loaded, create view & return it. Create front, back, and not enough cards view and conditionally return the right one.*/
   if (deck.id) {
+
+    /*Create title */
     const title = <h1>Study: {deck.name} </h1>;
 
     /*Create breadcrumb */
     const breadcrumb = (
-        <nav aria-label="breadcrumb">
-          <ol className="breadcrumb">
-            <li className="breadcrumb-item" aria-current="page">
-              <Link to="/">Home</Link>
-            </li>
-            <li className="breadcrumb-item" aria-current="page">
-              <Link to={`/decks/${deckId}`}>{deck.name}</Link>
-            </li>
-            <li className="breadcrumb-item active" aria-current="page">
-              Study
-            </li>
-          </ol>
-        </nav>
-      );
-
+      <nav aria-label="breadcrumb">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item" aria-current="page">
+            <Link to="/">Home</Link>
+          </li>
+          <li className="breadcrumb-item" aria-current="page">
+            <Link to={`/decks/${deckId}`}>{deck.name}</Link>
+          </li>
+          <li className="breadcrumb-item active" aria-current="page">
+            Study
+          </li>
+        </ol>
+      </nav>
+    );
+    /*create not enough cards view */
     const notEnoughCardsView = (
+      <div>
+        <h1>Not enough cards.</h1>
+        <p>
+          You need at least 3 cards to study. There are {deck.cards.length}{" "}
+          cards in this deck.
+        </p>
+        <Link to={`/decks/${deckId}/cards/new`} className="btn btn-primary">
+          + Add Cards
+        </Link>
+      </div>
+    );
+
+    /*If there aren't enough cards - return the breadcrumb, title, and not enough cards view. Don't try to query specific cards as there may be no cards */
+    if (deck.cards.length < 3) {
+      return (
         <div>
-          <h1>Not enough cards.</h1>
-          <p>
-            You need at least 3 cards to study. There are {deck.cards.length}{" "}
-            cards in this deck.
-          </p>
-          <Link to={`decks/${deckId}/cards/new`} className="btn btn-primary">
-            + Add Cards
-          </Link>
+          {breadcrumb}
+          {title}
+          {notEnoughCardsView}
         </div>
       );
-
-    if(deck.cards.length < 3) {
-        return <div>
-            {breadcrumb}
-            {title}
-            {notEnoughCardsView}
-        </div>
     }
 
+    /*Otherwise create front & back card views and return them conditionally based on the frontView state */
     const frontCardView = (
-      <div className="card" style={{ width: "18rem" }}>
+      <div className="card">
         <div className="card-body">
           <h5 className="card-title">
             Card {index + 1} of {deck.cards.length}
@@ -118,7 +123,7 @@ function Study() {
           <p className="card-text">{deck.cards[index].front}</p>
           <button
             onClick={() => setFrontView(!frontView)}
-            className="btn btn-primary"
+            className="btn btn-primary mr-1"
           >
             Flip
           </button>
@@ -127,7 +132,7 @@ function Study() {
     );
 
     const backCardView = (
-      <div className="card" style={{ width: "18rem" }}>
+      <div className="card">
         <div className="card-body">
           <h5 className="card-title">
             Card {index + 1} of {deck.cards.length}
@@ -135,7 +140,7 @@ function Study() {
           <p className="card-text">{deck.cards[index].back}</p>
           <button
             onClick={() => setFrontView(!frontView)}
-            className="btn btn-secondary"
+            className="btn btn-secondary mr-1"
           >
             Flip
           </button>
@@ -146,32 +151,19 @@ function Study() {
       </div>
     );
 
-    
-
-    /*Logic to return either front, back, or "Not enough cards" 
-    let viewToReturn;
-
-    if (deck.cards.length < 3) {
-      viewToReturn = notEnoughCardsView;
-    } else if (frontView) {
-      viewToReturn = frontCardView;
-    } else {
-      viewToReturn = backCardView;
-    }*/
-
     return (
-      <div>
+      <main>
         {breadcrumb}
         {title}
         {frontView ? frontCardView : backCardView}
-      </div>
+      </main>
     );
   }
   return (
-    <div>
-        <p>Loading</p>
-    </div>
-  )
+    <main>
+      <p>Loading</p>
+    </main>
+  );
 }
 
 export default Study;

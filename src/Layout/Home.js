@@ -5,7 +5,7 @@ import HomeDeckCard from "./HomeDeckCard"
 
 function Home({decks, deleteDeckHandler}){
     /*Home path: "/" */
-    /*Home accepts decks parameter */
+    /*Home accepts decks as a prop from index */
     /*For each deck in decks, Home will need to render it below the Create Deck Button with "View, Study, Delete"*/
 
     const {path} = useRouteMatch();
@@ -19,10 +19,10 @@ function Home({decks, deleteDeckHandler}){
     })
 
     return (
-        <>
+        <main>
             {createDeckBtn}
             {deckArray}
-        </>
+        </main>
     )
 }
 

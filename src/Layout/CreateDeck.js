@@ -4,6 +4,7 @@ import { createDeck } from "../utils/api";
 
 function CreateDeck() {
   /*path: /decks/new */
+  /*Objective: Lets users create a  new deck with a form with a deck name & description. Form Data is saved in the state and uploaded to the server on submission. */
 
   /*This object is used to set the initial formData state and reset the formData post submission */
   const initialFormData = {
@@ -16,7 +17,7 @@ function CreateDeck() {
 
   const [formData, setFormData] = useState({ ...initialFormData });
 
-  /*Keeps form values in sync with state values */
+  /*Keeps form values in sync with state values when form values change*/
   const handleChange = (event) => {
     setFormData({...formData, [event.target.name] : event.target.value})
   }
@@ -45,7 +46,7 @@ function CreateDeck() {
     return () => abortController.abort();
   }
 
-/*Title and markup created here */
+/*Breadcrumb, title and markup created here */
   
   const breadcrumb = (
     <nav aria-label="breadcrumb">
@@ -76,6 +77,7 @@ function CreateDeck() {
       ></input>
       <label htmlFor="description">Description</label>
       <textarea
+        rows="5"
         id="description"
         name="description"
         placeholder="Brief description of deck"
@@ -97,11 +99,11 @@ function CreateDeck() {
   );
 
   return (
-    <div>
+    <main>
       {breadcrumb}
       {title}
       {form}
-    </div>
+    </main>
   );
 }
 

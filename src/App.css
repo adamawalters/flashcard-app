@@ -1,0 +1,57 @@
+main {
+    padding: 0 10%;
+}
+
+.card-wrapper {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.qtn-btn-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.qtn-wrapper {
+    display: flex;
+}
+
+.qtn-child {
+    flex: 1;
+    margin: 10px;
+}
+
+.card-header-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-btn {
+    margin: 0px 3px;
+}
+
+/*buttons in a deck view card that are delete buttons - push them to the left */
+.card-btn.btn-danger {
+    margin-left: auto;
+}
+
+.card {
+    margin-top: 5px;
+}
+
+input, label, textarea{
+    display: block;
+    width: 100%;
+}
+
+input, textarea {
+    margin-bottom: 20px;
+}
+
+
+
+form button {
+    margin-right: 5px;
+}

@@ -19,6 +19,9 @@ function EditDeck() {
     description: "",
   });
 
+  /*Used to capture the deck name from the API - not linked to the form values, so not updated when form is typed in */
+  const [originalDeckName, setOriginalDeckName] = useState("");
+
   /*Read from existing deck once */
   useEffect(() => {
     const abortController = new AbortController();
@@ -26,6 +29,8 @@ function EditDeck() {
       try {
         const deckFromApi = await readDeck(deckId, abortController.signal);
         setFormData(deckFromApi);
+        setOriginalDeckName(deckFromApi.name)
+        
       } catch (error) {
         if (error.name != "AbortError") {
           throw error;
@@ -35,12 +40,13 @@ function EditDeck() {
     loadDeck();
   }, []);
 
+
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
   
-  /*Runs when updated deck data is submitted. Posts to server and goes to deck page */
+  /*Event handler runs when updated deck data is submitted. Posts to server and goes to deck page */
   const handleSubmit = (event) => {
     event.preventDefault();
     const abortController = new AbortController()
@@ -61,6 +67,7 @@ function EditDeck() {
     return () => abortController.abort();
   }
   
+  /*Markup created without if statement b/c if API calls are not complete, they will display initial form data empty strings */
   const breadcrumb = (
     <nav aria-label="breadcrumb">
       <ol className="breadcrumb">
@@ -68,7 +75,7 @@ function EditDeck() {
           <Link to="/">Home</Link>
         </li>
         <li className="breadcrumb-item" aria-current="page">
-          <Link to={`/decks/${deckId}`}>{formData.name}</Link>
+          <Link to={`/decks/${deckId}`}>{originalDeckName}</Link>
         </li>
         <li className="breadcrumb-item active" aria-current="page">
           Edit Deck
@@ -78,6 +85,7 @@ function EditDeck() {
   );
 
   const title = <h1>Edit Deck</h1>;
+
   const form = (
     <form onSubmit={handleSubmit}>
       <label htmlFor="name">Name</label>
@@ -113,11 +121,11 @@ function EditDeck() {
   );
 
   return (
-    <div>
+    <main>
       {breadcrumb}
       {title}
       {form}
-    </div>
+    </main>
   );
 }
 
