@@ -11,8 +11,8 @@
       "id": 2
     },
     {
-      "name": "MyDeck",
-      "description": "mydeckismydeck",
+      "name": "TestDeck",
+      "description": "Description",
       "id": 3
     }
   ],
@@ -20,7 +20,7 @@
     {
       "id": 1,
       "front": "Differentiate between Real DOM and Virtual DOM.",
-      "back": "Virtual DOM updates are faster but do not directly update the HTML, do they?",
+      "back": "Virtual DOM updates are faster but do not directly update the HTML",
       "deckId": 1
     },
     {
@@ -53,18 +53,6 @@
       "back": "b",
       "deckId": 1,
       "id": 7
-    },
-    {
-      "front": "mydeckcard1",
-      "back": "mydeckcard1back",
-      "deckId": 3,
-      "id": 8
-    },
-    {
-      "front": "mydeckcard2",
-      "back": "mydeckcard2back",
-      "deckId": 3,
-      "id": 9
     }
   ]
 }

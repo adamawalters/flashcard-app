@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   useParams,
   useRouteMatch,
+  Link,
   useHistory,
 } from "react-router-dom/cjs/react-router-dom.min";
 import { readDeck, updateDeck } from "../utils/api";
@@ -60,6 +61,21 @@ function EditDeck() {
     return () => abortController.abort();
   }
   
+  const breadcrumb = (
+    <nav aria-label="breadcrumb">
+      <ol className="breadcrumb">
+        <li className="breadcrumb-item" aria-current="page">
+          <Link to="/">Home</Link>
+        </li>
+        <li className="breadcrumb-item" aria-current="page">
+          <Link to={`/decks/${deckId}`}>{formData.name}</Link>
+        </li>
+        <li className="breadcrumb-item active" aria-current="page">
+          Edit Deck
+        </li>
+      </ol>
+    </nav>
+  );
 
   const title = <h1>Edit Deck</h1>;
   const form = (
@@ -98,6 +114,7 @@ function EditDeck() {
 
   return (
     <div>
+      {breadcrumb}
       {title}
       {form}
     </div>

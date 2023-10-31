@@ -1,20 +1,27 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory, Link } from "react-router-dom/cjs/react-router-dom.min";
 import { createDeck } from "../utils/api";
 
 function CreateDeck() {
   /*path: /decks/new */
+
+  /*This object is used to set the initial formData state and reset the formData post submission */
   const initialFormData = {
     name: "",
     description: "",
   };
+
+  /*History is used to go to the new decks screen after submit, or to go home when cancelling creation */
   const history = useHistory();
+
   const [formData, setFormData] = useState({ ...initialFormData });
 
+  /*Keeps form values in sync with state values */
   const handleChange = (event) => {
     setFormData({...formData, [event.target.name] : event.target.value})
   }
 
+  /*Activated when form is submitted. Posts the new deck to the server, resets form data, and navigates to decks page */
   const handleSubmit = (event) => {
     event.preventDefault();
     const abortController = new AbortController()
@@ -22,7 +29,8 @@ function CreateDeck() {
     async function makeDeck() {
         try{
             const response = await createDeck(formData, abortController.signal);
-            setFormData({initialFormData})
+            /*Essential below to keep form controlled "..." */
+            setFormData({...initialFormData})
             const id = response.id;
             history.push(`/decks/${id}`)
         } catch(error) {
@@ -37,7 +45,22 @@ function CreateDeck() {
     return () => abortController.abort();
   }
 
+/*Title and markup created here */
+  
+  const breadcrumb = (
+    <nav aria-label="breadcrumb">
+      <ol className="breadcrumb">
+        <li className="breadcrumb-item" aria-current="page">
+          <Link to="/">Home</Link>
+        </li>
+        <li className="breadcrumb-item active" aria-current="page">
+          Create Deck
+        </li>
+      </ol>
+    </nav>
+  );
 
+  
   const title = <h1>Create Deck</h1>;
   const form = (
     <form onSubmit={handleSubmit}>
@@ -75,6 +98,7 @@ function CreateDeck() {
 
   return (
     <div>
+      {breadcrumb}
       {title}
       {form}
     </div>

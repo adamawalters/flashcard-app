@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import {
   useRouteMatch,
   useParams,
-  useHistory
+  useHistory,
+  Link
 } from "react-router-dom/cjs/react-router-dom.min";
 import { readDeck, readCard, updateCard } from "../utils/api";
 
@@ -117,8 +118,27 @@ function EditCard() {
   );
 
   if(card.id) {
+
+    const breadcrumb = (
+      <nav aria-label="breadcrumb">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item" aria-current="page">
+            <Link to="/">Home</Link>
+          </li>
+          <li className="breadcrumb-item" aria-current="page">
+            <Link to={`/decks/${deckId}`}>{deck.name}</Link>
+          </li>
+          <li className="breadcrumb-item active" aria-current="page">
+            Edit Card {cardId}
+          </li>
+        </ol>
+      </nav>
+    );
+
     return (
+      
         <div>
+          {breadcrumb}
           {title}
           {form}
         </div>

@@ -10,8 +10,10 @@ function Home({decks, deleteDeckHandler}){
 
     const {path} = useRouteMatch();
 
+    /*creating create deck button. Links to create deck screen */
     const createDeckBtn = <button className="btn btn-secondary"><Link className="text-reset" to={`${path}decks/new`}>+ Create Deck</Link></button>;
-    //const deckArray = null; /*Need an array of cards here */
+
+    /* creates card views for each deck in the decks array and puts them into an array*/
     const deckArray = decks.map((deck, index) => {
         return <HomeDeckCard key={index} deck={deck} deleteDeckHandler={()=>deleteDeckHandler(deck.id)}/>
     })
@@ -20,7 +22,6 @@ function Home({decks, deleteDeckHandler}){
         <>
             {createDeckBtn}
             {deckArray}
-            <p>Home</p>
         </>
     )
 }

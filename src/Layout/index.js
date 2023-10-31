@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import NotFound from "./NotFound";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
 import Home from "./Home";
 import Study from "./Study";
 import CreateDeck from "./CreateDeck";
@@ -14,6 +14,7 @@ import {listDecks, deleteDeck, updateDeck} from "../utils/api/index.js";
 function Layout() {
 
   const [decks, setDecks] = useState([]);
+  const history = useHistory();
 
   /* Get DECKS data from the database & set it to the "decks" state. Run this at some frequency tbd*/
   useEffect(() => {
@@ -37,24 +38,27 @@ function Layout() {
 
 
 
-/*Deletes deck. Passed to HomeDeckCard buttons */
-  const deleteDeckHandler = (deckIdToDelete) => {
+/*Deletes deck after user confirmation. Passed to HomeDeckCard buttons */
+  const deleteDeckHandler = async (deckIdToDelete) => {
     /*Window.confirm 
     
     */
     if(window.confirm(`
-    Delete this deck? 
+    Delete this deck? You will not be able to recover it.`)) {
 
-    You will not be able to recover it.`)) {
-      //Update decks state
-      //Update database with new deleted state for deck
-      const abortController = new AbortController()
-      const newDecksPostDeletion = decks.filter((deck) => deck.id !== deckIdToDelete)
+      /*create new deck array without the deck to be deleted  */
+      const newDecksPostDeletion = decks.filter((deck) => deck.id !== deckIdToDelete);
+
+      /*set state to the new state array post deletion */
+      setDecks(newDecksPostDeletion);
 
       /*Abort controller here simply b/c utility API asks for it - not sure how to leverage it */
-      deleteDeck(deckIdToDelete, abortController.signal)
-      setDecks(newDecksPostDeletion);
-      //database call
+      /* deletes deck from database using API call*/
+      const abortController = new AbortController();
+      const response = await deleteDeck(deckIdToDelete, abortController.signal);
+      history.push(`/`);
+
+      
     }
   }
 
@@ -67,7 +71,6 @@ function Layout() {
       <>
         <Header />
         <div className="container">
-          {/* TODO: Implement the screen starting here */}
           <Switch>
             <Route exact path="/">
               {/*Home needs decks display the decks and to calculate the cardlength. Also needs delete deck handler (used by HomeDeckCard) */}
@@ -88,9 +91,9 @@ function Layout() {
             <Route path="/decks/:deckId/cards/:cardId/edit">
               <EditCard />
             </Route>
-            {/*Deck also needs deleteDeckHandler as it displays all the cards as well as an option to delete the deck */}
-            <Route path="/decks/:deckId" deleteDeckHandler={deleteDeckHandler}>
-              <Deck />
+            <Route path="/decks/:deckId">
+              {/*Deck also needs deleteDeckHandler as it displays all the cards as well as an option to delete the deck */}
+              <Deck deleteDeckHandler={deleteDeckHandler}/>
             </Route>
             <Route>
               <NotFound />

@@ -14,7 +14,6 @@ function Deck({ deleteDeckHandler }) {
   const { deckId } = useParams();
   const { url } = useRouteMatch();
 
-
   /*Set the deck to the deck fetched from the API. Re-usable function for EditCard*/
   const readDeckFromAPI = () => {
     setDeck({});
@@ -32,15 +31,14 @@ function Deck({ deleteDeckHandler }) {
     }
     loadDeck();
     return () => abortController.abort();
-  }
+  };
 
-    /*Set the deck to the deck fetched from the API */
+  /*Set the deck to the deck fetched from the API */
   useEffect(() => {
-   readDeckFromAPI()
+    readDeckFromAPI();
   }, []);
 
-  /*Try using useEffect for deleteCard. Doesn't work. Change deck state to activate useEffect? Whenever deck state changes, add the updated deck? // or, make API update and then */
-  /* Now - update state to new deck without card. Then, make API call to delete card from deck*/
+  /* After user confirmation, update state to new deck without card. Then, make API call to delete card from deck*/
   const deleteCardHandler = (cardIdToDelete) => {
     if (
       window.confirm("Delete this card? You will not be able to recover it.")
@@ -94,7 +92,7 @@ function Deck({ deleteDeckHandler }) {
         <button className="btn btn-primary">
           {
             <Link className="text-reset" to={`${url}/cards/new`}>
-              Add Card
+              +Add Cards
             </Link>
           }
         </button>
@@ -111,6 +109,22 @@ function Deck({ deleteDeckHandler }) {
   /*If the API call has updated the deck to a deck from the API (therefore it has an id key) - display the deck */
   if (deck.id) {
     /*This section creates UIs all cards with the responses */
+
+    const breadcrumb = (
+      <nav aria-label="breadcrumb">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item" aria-current="page">
+            <Link to="/">Home</Link>
+          </li>
+          <li className="breadcrumb-item active" aria-current="page">
+            {deck.name}
+          </li>
+        </ol>
+      </nav>
+    );
+  
+
+
     const deckTestCards = deck.cards.map((card) => {
       return (
         <DeckTestCard
@@ -125,6 +139,7 @@ function Deck({ deleteDeckHandler }) {
 
     return (
       <>
+        {breadcrumb}
         {deckHeader}
         {deckTestCards}
       </>
