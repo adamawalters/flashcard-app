@@ -2,8 +2,8 @@
   "decks": [
     {
       "id": 1,
-      "name": "Rendering in React isimportantfdaf",
-      "description": "React's component structure allofdaws fodsafdsar quickly building a complex web application that relies on DOM manipulation."
+      "name": "Rendering in React",
+      "description": "React's component structure allows for quickly building a complex web application that relies on DOM manipulation. "
     },
     {
       "name": "React Router",
@@ -14,8 +14,8 @@
   "cards": [
     {
       "id": 1,
-      "front": "Differentiate between Real DOM and Vdafdasirfdsaftual DOM.dfafd",
-      "back": "Virtual DOM updates are faster but ddafdsfo not directly update the HTMLdfadffdfdafdfdaafds",
+      "front": "Differentiate between Real DOM and Virtual DOM.",
+      "back": "Virtual DOM updates are faster but do not directly update the HTML",
       "deckId": 1
     },
     {
@@ -26,13 +26,13 @@
     },
     {
       "id": 3,
-      "front": "How do you pass data 'down' to a React child component?fdaf",
-      "back": "As properties ",
+      "front": "How do you pass data 'down' to a React child component?",
+      "back": "As properties or props",
       "deckId": 1
     },
     {
       "front": "What path will match the follow Route?\n<Route>\n  <NotFound />\n</Route>",
-      "back": "All paths. A route with no path matches all URLs",
+      "back": "All paths. A route with no path matches all URL's",
       "deckId": 2,
       "id": 4
     },
@@ -43,40 +43,11 @@
       "id": 5
     },
     {
-      "front": "New card",
-      "back": "new card",
+      "cards": [],
+      "front": "b",
+      "back": "b",
       "deckId": 1,
       "id": 7
-    },
-    {
-      "front": "afda",
-      "back": "fdas",
-      "deckId": 1,
-      "id": 14
-    },
-    {
-      "front": "newwww card",
-      "back": "fafdsafda",
-      "deckId": 1,
-      "id": 15
-    },
-    {
-      "front": "afd",
-      "back": "fad",
-      "deckId": 1,
-      "id": 16
-    },
-    {
-      "front": "sfdafd",
-      "back": "fdafds",
-      "deckId": 1,
-      "id": 17
-    },
-    {
-      "front": "fdaf",
-      "back": "fda",
-      "deckId": 1,
-      "id": 18
     }
   ]
 }
