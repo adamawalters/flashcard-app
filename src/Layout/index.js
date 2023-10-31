@@ -3,18 +3,18 @@ import Header from "./Header";
 import NotFound from "./NotFound";
 import { Switch, Route, useHistory } from "react-router-dom";
 import Home from "./Home";
-import Study from "./Study";
 import CreateDeck from "./CreateDeck";
 import Deck from "./Deck";
-import EditDeck from "./EditDeck";
-import AddCard from "./AddCard";
-import EditCard from "./EditCard";
+
 import {listDecks, deleteDeck} from "../utils/api/index.js";
 
 function Layout() {
 
   const [decks, setDecks] = useState([]);
   const history = useHistory();
+
+  /* used so children can toggle re-render of deck*/
+  const [deckRerender, setDeckRerender] = useState(false);
 
   /* Get DECKS data from the database & set it to the "decks" state.*/
   useEffect(() => {
@@ -34,7 +34,7 @@ function Layout() {
     loadDecks();
 
     return () => abortController.abort(); /*Clean up function that runs before a new useEffect is called */
-  }, []);
+  }, [deckRerender]);
 
 
 
@@ -73,20 +73,8 @@ function Layout() {
               {/*Home needs decks display the decks and to calculate the cardlength. Also needs delete deck handler (used by HomeDeckCard) */}
               <Home decks={decks} deleteDeckHandler={deleteDeckHandler}/>
             </Route>
-            <Route path="/decks/:deckId/study">
-              <Study />
-            </Route>
             <Route path="/decks/new">
-              <CreateDeck />
-            </Route>
-            <Route path="/decks/:deckId/edit">
-              <EditDeck />
-            </Route>
-            <Route path="/decks/:deckId/cards/new">
-              <AddCard />
-            </Route>
-            <Route path="/decks/:deckId/cards/:cardId/edit">
-              <EditCard />
+              <CreateDeck setDeckRerender={setDeckRerender}/>
             </Route>
             <Route path="/decks/:deckId">
               {/*Deck also needs deleteDeckHandler as it displays all the cards as well as an option to delete the deck */}

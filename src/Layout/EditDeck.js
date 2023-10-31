@@ -1,61 +1,38 @@
 import React, { useState, useEffect } from "react";
 import {
   useParams,
-  useRouteMatch,
   Link,
   useHistory,
 } from "react-router-dom/cjs/react-router-dom.min";
-import { readDeck, updateDeck } from "../utils/api";
+import { updateDeck, readDeck } from "../utils/api";
 
-function EditDeck() {
+function EditDeck({deck, setDeck, toggleDeckUpdate}) {
   /*path: /decks/:deckId/edit */
-  /*Perhaps get loadDecks from Home page so that home page is always updated */
 
+  /*Prefill form state to deck */
+  const [formData, setFormData] = useState({...deck});
   const { deckId } = useParams();
   const history = useHistory();
-  const [formData, setFormData] = useState({
-    id: "",
-    name: "",
-    description: "",
-  });
 
-  /*Used to capture the deck name from the API - not linked to the form values, so not updated when form is typed in */
-  const [originalDeckName, setOriginalDeckName] = useState("");
-
-  /*Read from existing deck once */
-  useEffect(() => {
-    const abortController = new AbortController();
-    async function loadDeck() {
-      try {
-        const deckFromApi = await readDeck(deckId, abortController.signal);
-        setFormData(deckFromApi);
-        setOriginalDeckName(deckFromApi.name)
-        
-      } catch (error) {
-        if (error.name != "AbortError") {
-          throw error;
-        }
-      }
-    }
-    loadDeck();
-  }, []);
-
-
+  /*Keep form state and input updated*/
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
   
-  /*Event handler runs when updated deck data is submitted. Posts to server and goes to deck page */
+  /*Event handler runs when updated deck data is submitted. Posts to server and goes to deck page. Deck state updated to form.  */
   const handleSubmit = (event) => {
     event.preventDefault();
-    const abortController = new AbortController()
+    const abortController = new AbortController();
     
     async function makeDeck() {
         try{
             const response = await updateDeck(formData, abortController.signal);
+            setDeck({...formData});
             //setFormData({initialFormData})
             const id = response.id;
+             /*Call for re-render of deck in parent*/
+            toggleDeckUpdate((currentValue) => !currentValue)
             history.push(`/decks/${id}`)
         } catch(error) {
             if(error.name !== "AbortError") {
@@ -67,7 +44,12 @@ function EditDeck() {
     return () => abortController.abort();
   }
   
-  /*Markup created without if statement b/c if API calls are not complete, they will display initial form data empty strings */
+   /*read deck from decks */
+   useEffect(()=> {
+    readDeck(deck.id);
+  }, [])
+
+
   const breadcrumb = (
     <nav aria-label="breadcrumb">
       <ol className="breadcrumb">
@@ -75,7 +57,7 @@ function EditDeck() {
           <Link to="/">Home</Link>
         </li>
         <li className="breadcrumb-item" aria-current="page">
-          <Link to={`/decks/${deckId}`}>{originalDeckName}</Link>
+          <Link to={`/decks/${deckId}`}>{deck.name}</Link>
         </li>
         <li className="breadcrumb-item active" aria-current="page">
           Edit Deck
@@ -110,7 +92,9 @@ function EditDeck() {
       <button
         className="btn btn-secondary"
         type="button"
-        onClick={() => history.push(`/decks/${deckId}`)}
+        onClick={() => {
+          history.push(`/decks/${deckId}`)}
+        }
       >
         Cancel
       </button>

@@ -3,9 +3,14 @@ import {
   useParams,
   useRouteMatch,
   Link,
+  Switch, 
+  Route
 } from "react-router-dom/cjs/react-router-dom.min";
 import { deleteCard, readDeck } from "../utils/api";
 import DeckTestCard from "./DeckTestCard";
+import Study from "./Study";
+import EditDeck from "./EditDeck";
+import EditCard from "./EditCard";
 
 function Deck({ deleteDeckHandler }) {
   /*This path: /decks/:deckId */
@@ -14,7 +19,8 @@ function Deck({ deleteDeckHandler }) {
 
   const [deck, setDeck] = useState({});
   const { deckId } = useParams();
-  const { url } = useRouteMatch();
+  const { url, path } = useRouteMatch();
+  const [deckChildUpdate, setDeckChildUpdate] = useState(false);
 
   /*Set the deck to the deck fetched from the API. Re-usable function for EditCard*/
   const readDeckFromAPI = () => {
@@ -27,7 +33,10 @@ function Deck({ deleteDeckHandler }) {
         setDeck(deckFromApi);
       } catch (error) {
         if (error.name !== "AbortError") {
-          throw error;
+          if(error.message === "404 - Not Found") {
+            alert("Not found")
+          }
+          //re error;
         }
       }
     }
@@ -35,10 +44,10 @@ function Deck({ deleteDeckHandler }) {
     return () => abortController.abort();
   };
 
-  /*Set the deck to the deck fetched from the API */
+  /*Set the deck to the deck fetched from the API - runs when child edits deck*/
   useEffect(() => {
     readDeckFromAPI();
-  }, []);
+  }, [deckChildUpdate]);
 
   /* After user confirmation, update state to new deck without card. Then, make API call to delete card from deck*/
   const deleteCardHandler = (cardIdToDelete) => {
@@ -140,12 +149,28 @@ function Deck({ deleteDeckHandler }) {
     });
 
     return (
-      <main>
-        {breadcrumb}
-        {deckHeader}
-        <h1>Cards</h1>
-        {deckTestCards}
-      </main>
+      <Switch>
+        <Route exact path={`${path}`}>
+          <main>
+            {breadcrumb}
+            {deckHeader}
+            <h1>Cards</h1>
+            {deckTestCards}
+          </main>
+        </Route>
+        <Route path={`${path}/study`}>
+          <Study deck={deck}/>
+        </Route>
+        <Route path={`${path}/edit`}>
+          <EditDeck deck={deck} toggleDeckUpdate={setDeckChildUpdate} setDeck={setDeck}/>
+        </Route>
+        <Route path={`${path}/cards/new`}>
+          <EditCard deck={deck} toggleDeckUpdate={setDeckChildUpdate} edit={false}/>
+        </Route>
+        <Route path={`${path}/cards/:cardId/edit`}>
+          <EditCard deck={deck} toggleDeckUpdate={setDeckChildUpdate} edit={true}/>
+        </Route>
+      </Switch>
     );
   }
   return "Loading";

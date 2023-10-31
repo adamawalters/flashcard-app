@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useHistory, Link } from "react-router-dom/cjs/react-router-dom.min";
 import { createDeck } from "../utils/api";
 
-function CreateDeck() {
+function CreateDeck({setDeckRerender}) {
   /*path: /decks/new */
   /*Objective: Lets users create a  new deck with a form with a deck name & description. Form Data is saved in the state and uploaded to the server on submission. */
 
@@ -33,7 +33,9 @@ function CreateDeck() {
             /*Essential below to keep form controlled "..." */
             setFormData({...initialFormData})
             const id = response.id;
-            history.push(`/decks/${id}`)
+            /*toggle refresh on home page */
+            setDeckRerender((currentValue) => !currentValue);
+            history.push(`/decks/${id}`);
         } catch(error) {
             if(error.name !== "AbortError") {
                 throw Error;

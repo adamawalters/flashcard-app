@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
 import {
-  useParams,
   Link,
   useHistory,
 } from "react-router-dom/cjs/react-router-dom.min";
 import { readDeck } from "../utils/api";
 
-function Study() {
+
+function Study({deck}) {
   /*Path: /decks/:deckId/study */
   /*Summary: gets deck from URL & API call & lets students study each card in the deck. Front or back is managed via state. Then restarts the program or goes home.  */
-
-  /* Need current deck to access the cards. Will be fetched from API. Initially set to blank*/
-  const [deck, setDeck] = useState({});
-
   /*Index is used to move between the cards within the deck - state is updated by event handlers. Initially set to 0*/
   const [index, setIndex] = useState(0);
 
@@ -22,35 +18,14 @@ function Study() {
   /*History is used to navigate to home page post completion */
   const history = useHistory();
 
-  /* We get the deck ID from the URL so we know which deck to load */
-  const { deckId } = useParams();
-
-  /*First we load the deck from API using the deckID from the URL, and set the deck state to this deck*/
-  const readDeckFromAPI = () => {
-    setDeck({});
-    const abortController = new AbortController();
-
-    async function loadDeck() {
-      try {
-        const deckFromApi = await readDeck(deckId, abortController.signal);
-        setDeck(deckFromApi);
-      } catch (error) {
-        if (error.name !== "AbortError") {
-          throw error;
-        }
-      }
-    }
-    loadDeck();
-    return () => abortController.abort();
-  };
-
-  useEffect(() => {
-    readDeckFromAPI();
-  }, []);
+  /*read deck from decks */
+  useEffect(()=> {
+    readDeck(deck.id);
+  }, [])
 
   /*Updates the card index when user clicks next. If at the end, displays a message and restarts the deck or goes home */
   const nextBtnHandler = () => {
-    /*If we are at the last card, show popup to restart deck. If not at last card, increment index to show next card and switch to front view. */
+    /*If we are at the last card, show popup to restart deck. */
     if (index === deck.cards.length - 1) {
       if (window.confirm("Restart cards?")) {
         /*Restart the deck - set Index to 0 */
@@ -60,6 +35,7 @@ function Study() {
         /*Go Home */
         history.push("/");
       }
+    /*If we are not at the last card - increment the index (go to next card) */
     } else {
       setIndex(index + 1);
       setFrontView(true);
@@ -67,7 +43,7 @@ function Study() {
   };
 
   /* Once deck has loaded, create view & return it. Create front, back, and not enough cards view and conditionally return the right one.*/
-  if (deck.id) {
+  
 
     /*Create title */
     const title = <h1>Study: {deck.name} </h1>;
@@ -80,7 +56,7 @@ function Study() {
             <Link to="/">Home</Link>
           </li>
           <li className="breadcrumb-item" aria-current="page">
-            <Link to={`/decks/${deckId}`}>{deck.name}</Link>
+            <Link to={`/decks/${deck.id}`}>{deck.name}</Link>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
             Study
@@ -96,7 +72,7 @@ function Study() {
           You need at least 3 cards to study. There are {deck.cards.length}{" "}
           cards in this deck.
         </p>
-        <Link to={`/decks/${deckId}/cards/new`} className="btn btn-primary">
+        <Link to={`/decks/${deck.id}/cards/new`} className="btn btn-primary">
           + Add Cards
         </Link>
       </div>
@@ -159,11 +135,7 @@ function Study() {
       </main>
     );
   }
-  return (
-    <main>
-      <p>Loading</p>
-    </main>
-  );
-}
+  
+
 
 export default Study;

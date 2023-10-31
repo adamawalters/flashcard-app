@@ -4,44 +4,27 @@ import {
   useHistory,
   Link,
 } from "react-router-dom/cjs/react-router-dom.min";
-import { readDeck, readCard, updateCard } from "../utils/api";
+import { readCard, updateCard, createCard, readDeck } from "../utils/api";
 
-function EditCard() {
+function EditCard({ deck, edit, toggleDeckUpdate }) {
   /*This path: /decks/:deckId/cards/:cardId/edit */
   /*This is a form that lets you edit a card within a deck */
 
-  /*Gets deckID from URL for API call */
-  const { deckId, cardId } = useParams();
+  /*Gets deckID, cardID from URL. use cardId only if editing  */
 
-  /*Needs info about the current deck for the breadcrumb  */
-  const [deck, setDeck] = useState({});
-  const [card, setCard] = useState({});
-  const history = useHistory();
-
-  /*Read deck from API - */
-  const readDeckFromAPI = () => {
-    setDeck({});
-    const abortController = new AbortController();
-    async function loadDeck() {
-      try {
-        const deckFromApi = await readDeck(deckId, abortController.signal);
-        setDeck(deckFromApi);
-      } catch (error) {
-        if (error.name !== "AbortError") {
-          throw error;
-        }
-      }
-    }
-    loadDeck();
-    return () => abortController.abort();
+  const {deckId, cardId} = useParams();
+  
+  /*Used for initialization and reset */
+  const blankCard = {
+    front: "",
+    back: "",
   };
 
-  /*Read deck from API */
-  useEffect(() => {
-    readDeckFromAPI();
-  }, []);
+  /*set up card state*/
+  const [card, setCard] = useState(blankCard);
+  const history = useHistory();
 
-  /*Reusable function to read card from API - needs this to pre-fill the card state & form*/
+  /*Read card from API (only if editing existing card) - needs this to pre-fill the card state & form*/
   const readCardFromAPI = () => {
     setCard({});
     const abortController = new AbortController();
@@ -59,21 +42,30 @@ function EditCard() {
     return () => abortController.abort();
   };
 
-  /*Read Card from API */
+  /*Read Card from API and overwrite blank card - only if editing existing card*/
   useEffect(() => {
-    readCardFromAPI();
+    if (edit) {
+      readCardFromAPI();
+    }
   }, []);
 
-  /*Event handler when form is submitted. Post the card to the API.  */
+   /*read deck from decks */
+   useEffect(()=> {
+    readDeck(deck.id);
+  }, [])
+
+  /*Event handler when form is submitted. Post the card to the API (either update or create)  */
   const handleSubmit = (event) => {
     event.preventDefault();
     const abortController = new AbortController();
 
-    async function makeCard() {
+    async function refineCard() {
       try {
         await updateCard(card, abortController.signal);
         history.push(`/decks/${deckId}`);
         //setFormData({...initialFormData});
+        /*Call for re-render in parent*/
+        toggleDeckUpdate((currentValue) => !currentValue)
       } catch (error) {
         if (error.name !== "AbortError") {
           throw error;
@@ -81,7 +73,26 @@ function EditCard() {
       }
     }
 
-    makeCard();
+    async function makeCard() {
+      try {
+        await createCard(deckId, card, abortController.signal);
+        setCard({ ...blankCard });
+         /*Call for re-render in parent*/
+         toggleDeckUpdate((currentValue) => !currentValue)
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          throw error;
+        }
+      }
+    }
+
+    /*If editing an existing card - updateCard. Otherwise: createCard */
+    if (edit) {
+      refineCard();
+    } else {
+      makeCard();
+    }
+
     return () => abortController.abort();
   };
 
@@ -90,10 +101,9 @@ function EditCard() {
     setCard({ ...card, [event.target.name]: event.target.value });
   };
 
-  /* When both card & deck API calls are done, create markup */
-  if (card.id && deck.id) {
-    
-    const title = <h1>{deck.name}: Edit Card</h1>;
+  /* Create markup */
+
+    const title = <h1>{deck.name}: {edit ? `Edit Card` : `Add Card`}</h1>;
 
     const form = (
       <form onSubmit={handleSubmit}>
@@ -120,10 +130,10 @@ function EditCard() {
           onClick={() => history.push(`/decks/${deckId}`)}
           type="button"
         >
-          Cancel
+          {edit ? "Cancel" : "Done"}
         </button>
         <button className="btn btn-primary" type="submit">
-          Submit
+          {edit ? "Submit" : "Save"}
         </button>
       </form>
     );
@@ -138,7 +148,7 @@ function EditCard() {
             <Link to={`/decks/${deckId}`}>{deck.name}</Link>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
-            Edit Card {cardId}
+            {edit ? `Edit Card ${cardId}` : `Add Card`}
           </li>
         </ol>
       </nav>
@@ -151,9 +161,8 @@ function EditCard() {
         {form}
       </main>
     );
-  }
+  
 
-  return "Loading";
 }
 
 export default EditCard;
