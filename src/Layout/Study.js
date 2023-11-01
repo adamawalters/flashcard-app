@@ -1,9 +1,8 @@
-import React, { useState, useEffect} from "react";
+import React, { useState} from "react";
 import {
   Link,
   useHistory,
 } from "react-router-dom/cjs/react-router-dom.min";
-import { readDeck } from "../utils/api";
 
 
 function Study({deck}) {
@@ -18,10 +17,6 @@ function Study({deck}) {
   /*History is used to navigate to home page post completion */
   const history = useHistory();
 
-  /*read deck from decks */
-  useEffect(()=> {
-    readDeck(deck.id);
-  }, [deck.id])
 
   /*Updates the card index when user clicks next. If at the end, displays a message and restarts the deck or goes home */
   const nextBtnHandler = () => {

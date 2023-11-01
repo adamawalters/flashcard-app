@@ -43,10 +43,6 @@ function EditCard({ deck, toggleDeckUpdate }) {
     readCardFromAPI();
   }, [cardId]);
 
-  /*read deck from decks */
-  useEffect(() => {
-    readDeck(deck.id);
-  }, [deck.id]);
 
   /*Event handler when form is submitted. Post the card to the API (either update or create)  */
   const handleSubmit = (event) => {

@@ -44,11 +44,6 @@ function EditDeck({deck, setDeck, toggleDeckUpdate}) {
     return () => abortController.abort();
   }
   
-   /*read deck from decks */
-   useEffect(()=> {
-    readDeck(deck.id);
-  }, [deck.id])
-
 
   const breadcrumb = (
     <nav aria-label="breadcrumb">
