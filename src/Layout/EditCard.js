@@ -10,8 +10,7 @@ function EditCard({ deck, edit, toggleDeckUpdate }) {
   /*This path: /decks/:deckId/cards/:cardId/edit */
   /*This is a form that lets you edit a card within a deck */
 
-  /*Gets deckID, cardID from URL. use cardId only if editing  */
-
+  /*Gets deckID, cardID from URL. use cardId only if editing an existing card */
   const {deckId, cardId} = useParams();
   
   /*Used for initialization and reset */
@@ -42,12 +41,15 @@ function EditCard({ deck, edit, toggleDeckUpdate }) {
     return () => abortController.abort();
   };
 
+
   /*Read Card from API and overwrite blank card - only if editing existing card*/
   useEffect(() => {
     if (edit) {
       readCardFromAPI();
     }
-  }, []);
+  }, [edit]);
+
+  
 
    /*read deck from decks */
    useEffect(()=> {
@@ -101,7 +103,7 @@ function EditCard({ deck, edit, toggleDeckUpdate }) {
     setCard({ ...card, [event.target.name]: event.target.value });
   };
 
-  /* Create markup */
+  /* Create markup - lots is conditional based on if the screen is edit or add card */
 
     const title = <h1>{deck.name}: {edit ? `Edit Card` : `Add Card`}</h1>;
 

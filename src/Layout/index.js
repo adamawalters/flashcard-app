@@ -56,7 +56,6 @@ function Layout() {
       setDeckRerender((currentValue)=>!currentValue)
       history.push(`/`);
 
-      
     }
   }
 

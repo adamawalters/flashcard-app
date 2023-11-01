@@ -27,7 +27,7 @@ function Study({deck}) {
   const nextBtnHandler = () => {
     /*If we are at the last card, show popup to restart deck. */
     if (index === deck.cards.length - 1) {
-      if (window.confirm("Restart cards?")) {
+      if (window.confirm("Restart cards? Click 'cancel' to return to the homepage")) {
         /*Restart the deck - set Index to 0 */
         setIndex(0);
         setFrontView(true);

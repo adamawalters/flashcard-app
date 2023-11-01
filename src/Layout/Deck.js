@@ -44,10 +44,10 @@ function Deck({ deleteDeckHandler }) {
     return () => abortController.abort();
   };
 
-  /*Set the deck to the deck fetched from the API - runs when child edits deck*/
+  /*Set the deck to the deck fetched from the API - runs when child edits deck, or when deckID parameter changes*/
   useEffect(() => {
     readDeckFromAPI();
-  }, [deckChildUpdate]);
+  }, [deckChildUpdate, deckId]);
 
   /* After user confirmation, update state to new deck without card. Then, make API call to delete card from deck*/
   const deleteCardHandler = (cardIdToDelete) => {
