@@ -41,6 +41,24 @@
       "back": "Renders the first matching child <Route> ",
       "deckId": 2,
       "id": 5
+    },
+    {
+      "front": "new card",
+      "back": "new card",
+      "deckId": 2,
+      "id": 6
+    },
+    {
+      "front": "fdzv",
+      "back": "dafads",
+      "deckId": 1,
+      "id": 7
+    },
+    {
+      "front": "daf",
+      "back": "afdd",
+      "deckId": 2,
+      "id": 8
     }
   ]
 }

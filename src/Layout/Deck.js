@@ -12,7 +12,7 @@ import Study from "./Study";
 import EditDeck from "./EditDeck";
 import EditCard from "./EditCard";
 
-function Deck({ deleteDeckHandler }) {
+function Deck({ deleteDeckHandler, setDeckRerender }) {
   /*This path: /decks/:deckId */
   /*Deck state should be at the deck level - home/layout page shows multiple decks*/
   /*Objective: displays details about the deck as well as each card in the deck,and lets users edit details about the deck, delete the deck, edit the cards, add cards, delete cards */
@@ -31,6 +31,9 @@ function Deck({ deleteDeckHandler }) {
       try {
         const deckFromApi = await readDeck(deckId, abortController.signal);
         setDeck(deckFromApi);
+
+        /*Makes parent (index) re-render */
+        setDeckRerender((currentValue) => !currentValue)
       } catch (error) {
         if (error.name !== "AbortError") {
           if(error.message === "404 - Not Found") {

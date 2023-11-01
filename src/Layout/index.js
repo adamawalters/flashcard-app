@@ -78,7 +78,7 @@ function Layout() {
             </Route>
             <Route path="/decks/:deckId">
               {/*Deck also needs deleteDeckHandler as it displays all the cards as well as an option to delete the deck */}
-              <Deck deleteDeckHandler={deleteDeckHandler}/>
+              <Deck deleteDeckHandler={deleteDeckHandler} setDeckRerender={setDeckRerender}/>
             </Route>
             <Route>
               <NotFound />
