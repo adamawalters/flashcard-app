@@ -104,7 +104,7 @@ function EditCard({ deck, edit, toggleDeckUpdate }) {
 
   const title = (
     <h1>
-      {deck.name}: {edit ? `Edit Card` : `Add Card`}
+      {edit ? "" : `${deck.name} : `} {edit ? `Edit Card` : `Add Card`}
     </h1>
   );
 

@@ -46,7 +46,7 @@ function Study({deck}) {
   
 
     /*Create title */
-    const title = <h1>Study: {deck.name} </h1>;
+    const title = <h1>{deck.name}: Study </h1>;
 
     /*Create breadcrumb */
     const breadcrumb = (
