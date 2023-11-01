@@ -21,7 +21,7 @@ function Study({deck}) {
   /*read deck from decks */
   useEffect(()=> {
     readDeck(deck.id);
-  }, [])
+  }, [deck.id])
 
   /*Updates the card index when user clicks next. If at the end, displays a message and restarts the deck or goes home */
   const nextBtnHandler = () => {

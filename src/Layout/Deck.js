@@ -23,34 +23,36 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
   const [deckChildUpdate, setDeckChildUpdate] = useState(false);
 
   /*Set the deck to the deck fetched from the API. Re-usable function for EditCard*/
-  const readDeckFromAPI = () => {
-    setDeck({});
-    const abortController = new AbortController();
-
-    async function loadDeck() {
-      try {
-        const deckFromApi = await readDeck(deckId, abortController.signal);
-        setDeck(deckFromApi);
-
-        /*Makes parent (index) re-render */
-        setDeckRerender((currentValue) => !currentValue)
-      } catch (error) {
-        if (error.name !== "AbortError") {
-          if(error.message === "404 - Not Found") {
-            alert("Not found")
-          }
-          //re error;
-        }
-      }
-    }
-    loadDeck();
-    return () => abortController.abort();
-  };
 
   /*Set the deck to the deck fetched from the API - runs when child edits deck, or when deckID parameter changes*/
   useEffect(() => {
+
+    const readDeckFromAPI = () => {
+      setDeck({});
+      const abortController = new AbortController();
+  
+      async function loadDeck() {
+        try {
+          const deckFromApi = await readDeck(deckId, abortController.signal);
+          setDeck(deckFromApi);
+  
+          /*Makes parent (index) re-render */
+          setDeckRerender((currentValue) => !currentValue);
+        } catch (error) {
+          if (error.name !== "AbortError") {
+            if(error.message === "404 - Not Found") {
+              alert("Not found")
+            }
+            //re error;
+          }
+        }
+      }
+      loadDeck();
+      return () => abortController.abort();
+    };
+
     readDeckFromAPI();
-  }, [deckChildUpdate, deckId]);
+  }, [deckChildUpdate, deckId, setDeckRerender]);
 
   /* After user confirmation, update state to new deck without card. Then, make API call to delete card from deck*/
   const deleteCardHandler = (cardIdToDelete) => {
@@ -64,6 +66,9 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
       /*Set deck state to the current deck with the updated cards array without the deleted card */
       setDeck({ ...deck, cards: cardsWithoutCard });
 
+      /*Update parent index */
+      setDeckRerender((currentValue)=> !currentValue)
+
       const abortController = new AbortController();
 
       /*Remove card from the database via API call */
@@ -71,7 +76,7 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
         try {
           await deleteCard(cardIdToDelete, abortController.signal);
         } catch (error) {
-          if (error.name != "AbortError") {
+          if (error.name !== "AbortError") {
             throw error;
           }
         }

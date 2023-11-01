@@ -47,7 +47,7 @@ function EditDeck({deck, setDeck, toggleDeckUpdate}) {
    /*read deck from decks */
    useEffect(()=> {
     readDeck(deck.id);
-  }, [])
+  }, [deck.id])
 
 
   const breadcrumb = (
