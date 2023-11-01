@@ -11,6 +11,7 @@ import DeckTestCard from "./DeckTestCard";
 import Study from "./Study";
 import EditDeck from "./EditDeck";
 import EditCard from "./EditCard";
+import AddCard from "./AddCard";
 
 function Deck({ deleteDeckHandler, setDeckRerender }) {
   /*This path: /decks/:deckId */
@@ -36,7 +37,7 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
           const deckFromApi = await readDeck(deckId, abortController.signal);
           setDeck(deckFromApi);
   
-          /*Makes parent (index) re-render */
+          /*Makes parent (index) re-render once deck has loaded potentially new cards so it will show on index page without refresh */
           setDeckRerender((currentValue) => !currentValue);
         } catch (error) {
           if (error.name !== "AbortError") {
@@ -173,10 +174,10 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
           <EditDeck deck={deck} toggleDeckUpdate={setDeckChildUpdate} setDeck={setDeck}/>
         </Route>
         <Route path={`${path}/cards/new`}>
-          <EditCard deck={deck} toggleDeckUpdate={setDeckChildUpdate} edit={false}/>
+          <AddCard deck={deck} toggleDeckUpdate={setDeckChildUpdate}/> {/*won't need edit anymore */}
         </Route>
         <Route path={`${path}/cards/:cardId/edit`}>
-          <EditCard deck={deck} toggleDeckUpdate={setDeckChildUpdate} edit={true}/>
+          <EditCard deck={deck} toggleDeckUpdate={setDeckChildUpdate}/>
         </Route>
       </Switch>
     );

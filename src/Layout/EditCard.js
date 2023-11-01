@@ -4,26 +4,23 @@ import {
   useHistory,
   Link,
 } from "react-router-dom/cjs/react-router-dom.min";
-import { readCard, updateCard, createCard, readDeck } from "../utils/api";
+import { readCard, updateCard, readDeck } from "../utils/api";
+import CardForm from "./CardForm";
 
-function EditCard({ deck, edit, toggleDeckUpdate }) {
+function EditCard({ deck, toggleDeckUpdate }) {
   /*This path: /decks/:deckId/cards/:cardId/edit */
   /*This is a form that lets you edit a card within a deck */
 
-  /*Gets deckID, cardID from URL. use cardId only if editing an existing card */
+  /*Gets deckID, cardID from URL */
   const { deckId, cardId } = useParams();
 
   /*Used for initialization and reset */
-  const blankCard = {
-    front: "",
-    back: "",
-  };
 
   /*set up card state*/
-  const [card, setCard] = useState(blankCard);
+  const [card, setCard] = useState({});
   const history = useHistory();
 
-  /*Read Card from API and overwrite blank card - only if editing existing card*/
+  /*Read Card from API and overwrite blank card when cardId updates*/
   useEffect(() => {
     /*Read card from API (only if editing existing card) - needs this to pre-fill the card state & form*/
     const readCardFromAPI = () => {
@@ -43,10 +40,8 @@ function EditCard({ deck, edit, toggleDeckUpdate }) {
       return () => abortController.abort();
     };
 
-    if (edit) {
-      readCardFromAPI();
-    }
-  }, [edit, cardId]);
+    readCardFromAPI();
+  }, [cardId]);
 
   /*read deck from decks */
   useEffect(() => {
@@ -72,25 +67,7 @@ function EditCard({ deck, edit, toggleDeckUpdate }) {
       }
     }
 
-    async function makeCard() {
-      try {
-        await createCard(deckId, card, abortController.signal);
-        setCard({ ...blankCard });
-        /*Call for re-render in parent*/
-        toggleDeckUpdate((currentValue) => !currentValue);
-      } catch (error) {
-        if (error.name !== "AbortError") {
-          throw error;
-        }
-      }
-    }
-
-    /*If editing an existing card - updateCard. Otherwise: createCard */
-    if (edit) {
-      refineCard();
-    } else {
-      makeCard();
-    }
+    refineCard();
 
     return () => abortController.abort();
   };
@@ -100,70 +77,42 @@ function EditCard({ deck, edit, toggleDeckUpdate }) {
     setCard({ ...card, [event.target.name]: event.target.value });
   };
 
-  /* Create markup - lots is conditional based on if the screen is edit or add card */
+  /* Create markup*/
 
-  const title = (
-    <h1>
-      {edit ? "" : `${deck.name} : `} {edit ? `Edit Card` : `Add Card`}
-    </h1>
-  );
+  if (card.id) {
+    const title = <h1>Edit Card</h1>;
 
-  const form = (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="front">Front</label>
-      <textarea
-        type="text"
-        name="front"
-        id="front"
-        placeholder="Front side of card"
-        value={card.front}
-        onChange={handleChange}
-      ></textarea>
-      <label htmlFor="back">Back</label>
-      <textarea
-        type="text"
-        name="back"
-        id="back"
-        placeholder="Back side of card"
-        value={card.back}
-        onChange={handleChange}
-      ></textarea>
-      <button
-        className="btn btn-secondary"
-        onClick={() => history.push(`/decks/${deckId}`)}
-        type="button"
-      >
-        {edit ? "Cancel" : "Done"}
-      </button>
-      <button className="btn btn-primary" type="submit">
-        {edit ? "Submit" : "Save"}
-      </button>
-    </form>
-  );
+    const breadcrumb = (
+      <nav aria-label="breadcrumb">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item" aria-current="page">
+            <Link to="/">Home</Link>
+          </li>
+          <li className="breadcrumb-item" aria-current="page">
+            <Link to={`/decks/${deckId}`}>{deck.name}</Link>
+          </li>
+          <li className="breadcrumb-item active" aria-current="page">
+            {`Edit Card ${cardId}`}
+          </li>
+        </ol>
+      </nav>
+    );
 
-  const breadcrumb = (
-    <nav aria-label="breadcrumb">
-      <ol className="breadcrumb">
-        <li className="breadcrumb-item" aria-current="page">
-          <Link to="/">Home</Link>
-        </li>
-        <li className="breadcrumb-item" aria-current="page">
-          <Link to={`/decks/${deckId}`}>{deck.name}</Link>
-        </li>
-        <li className="breadcrumb-item active" aria-current="page">
-          {edit ? `Edit Card ${cardId}` : `Add Card`}
-        </li>
-      </ol>
-    </nav>
-  );
+    return (
+      <main>
+        {breadcrumb}
+        {title}
+        <CardForm
+          changeHandler={handleChange}
+          submitHandler={handleSubmit}
+          card={card}
+          edit={true}
+        />
+      </main>
+    );
+  }
 
-  return (
-    <main>
-      {breadcrumb}
-      {title}
-      {form}
-    </main>
-  );
+  return "Loading";
 }
 
 export default EditCard;

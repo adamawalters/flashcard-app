@@ -2,26 +2,31 @@
   "decks": [
     {
       "id": 1,
-      "name": "Rendering in React",
-      "description": "React's component-like structure allows for quickly building a complex web application that relies on DOM manipulation. "
+      "name": "Rendering in React edited",
+      "description": "React's component-like structure allowdfadfs for quickly building a complex web application that relies on DOM manipulation. "
     },
     {
       "name": "React Router",
       "description": "React Router is a collection of navigational components that compose declaratively with your application.",
       "id": 2
+    },
+    {
+      "name": "New deck here",
+      "description": "Now again",
+      "id": 3
     }
   ],
   "cards": [
     {
       "id": 1,
-      "front": "Differentiate between Real DOM and Virtual DOM.",
-      "back": "Virtual DOM updates are faster but do not directly update the HTML",
+      "front": "Differentiate between Real DOM and Virtual DOM. Updated",
+      "back": "Virtual DOM updates are faster but do not directly update the HTML. again",
       "deckId": 1
     },
     {
       "id": 2,
-      "front": "How do you modify the state of a different React component?dafds",
-      "back": "Not at all! State is visible to the component only....",
+      "front": "How do you modify the state of a different React component?dafdsfa",
+      "back": "Not at all! State is visible to the component only....da",
       "deckId": 1
     },
     {
@@ -43,10 +48,16 @@
       "id": 5
     },
     {
-      "front": "fdzv",
-      "back": "dafads",
-      "deckId": 1,
-      "id": 7
+      "front": "dafdaf",
+      "back": "fdafda",
+      "deckId": 2,
+      "id": 8
+    },
+    {
+      "front": "test",
+      "back": "cared",
+      "deckId": 3,
+      "id": 9
     }
   ]
 }
