@@ -4,7 +4,7 @@ import {
   useHistory,
   Link,
 } from "react-router-dom/cjs/react-router-dom.min";
-import { readCard, updateCard, readDeck } from "../utils/api";
+import { readCard, updateCard } from "../utils/api";
 import CardForm from "./CardForm";
 
 function EditCard({ deck, toggleDeckUpdate }) {
