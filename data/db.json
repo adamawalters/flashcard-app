@@ -2,8 +2,8 @@
   "decks": [
     {
       "id": 1,
-      "name": "Rendering in React edited",
-      "description": "React's component-like structure allowdfadfs for quickly building a complex web application that relies on DOM manipulation. "
+      "name": "Rendering in React",
+      "description": "React's component structure allows for quickly building a complex web application that relies on DOM manipulation. "
     },
     {
       "name": "React Router",
@@ -14,14 +14,14 @@
   "cards": [
     {
       "id": 1,
-      "front": "Differentiate between Real DOM and Virtual DOM. Updated",
-      "back": "Virtual DOM updates are faster but do not directly update the HTML. again",
+      "front": "Differentiate between Real DOM and Virtual DOM.",
+      "back": "Virtual DOM updates are faster but do not directly update the HTML",
       "deckId": 1
     },
     {
       "id": 2,
-      "front": "How do you modify the state of a different React component?dafdsfa",
-      "back": "Not at all! State is visible to the component only....da",
+      "front": "How do you modify the state of a different React component?",
+      "back": "Not at all! State is visible to the component only.",
       "deckId": 1
     },
     {
@@ -32,7 +32,7 @@
     },
     {
       "front": "What path will match the follow Route?\n<Route>\n  <NotFound />\n</Route>",
-      "back": "All paths. A route with no path matches all URLs",
+      "back": "All paths. A route with no path matches all URL's",
       "deckId": 2,
       "id": 4
     },
@@ -41,6 +41,13 @@
       "back": "Renders the first matching child <Route> ",
       "deckId": 2,
       "id": 5
+    },
+    {
+      "cards": [],
+      "front": "b",
+      "back": "b",
+      "deckId": 1,
+      "id": 7
     }
   ]
 }
