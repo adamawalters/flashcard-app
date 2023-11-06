@@ -19,5 +19,5 @@ function App() {
   );
 }
 
-/*exporting component to index.js */
+
 export default App;
