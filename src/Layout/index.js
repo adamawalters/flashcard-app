@@ -49,7 +49,6 @@ function Layout() {
       /*set state to the new state array post deletion */
       setDecks(newDecksPostDeletion);
 
-      /*Abort controller here simply b/c utility API asks for it - not sure how to leverage it */
       /* deletes deck from database using API call*/
       const abortController = new AbortController();
       await deleteDeck(deckIdToDelete, abortController.signal);
