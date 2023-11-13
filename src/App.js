@@ -4,7 +4,7 @@ import Layout from "./Layout";
 import "./App.css";
 
 /**
- * App is a wrapper for <Layout>, you should not need to change this file.
+ * App is the wrapper for <Layout>
  */
 
 function App() {
