@@ -7,9 +7,25 @@ header {
     background-color: #023047;
 }
 
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.item {
+    flex: 1;
+    
+}
+
 main {
     padding: 0 10%;
     font-family: 'Open Sans'
+}
+
+#flashcard-img {
+    object-fit: contain;
+    width: 40px;
+    height: 100px;
 }
 
 

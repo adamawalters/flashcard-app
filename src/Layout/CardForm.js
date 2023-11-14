@@ -3,7 +3,7 @@ import { useParams, useHistory } from "react-router-dom/cjs/react-router-dom.min
 
 function CardForm({changeHandler, submitHandler, card, edit}){
 
-    /*edit prop is needed to determine what text on buttons to show for submit */
+    /* Edit prop is needed to determine what text on buttons to show for submit (differs between Edit & Add Card) */
     const {deckId} = useParams();
 
     /* Needed to navigate back home*/

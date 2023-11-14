@@ -73,7 +73,7 @@ function EditCard({ deck, toggleDeckUpdate }) {
     setCard({ ...card, [event.target.name]: event.target.value });
   };
 
-  /* Create markup*/
+  /* Create markup - uses reusable "CardForm" component */
 
   if (card.id) {
     const title = <h1>Edit Card</h1>;

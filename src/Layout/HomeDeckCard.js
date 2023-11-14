@@ -1,12 +1,11 @@
 import React from "react";
 import {Link, useRouteMatch} from "react-router-dom";
 
-/*return a bootstrap card for each deck containing name, description, view, study, delete buttons */
+/* Leveraged by "Home" component. Returns a bootstrap card for each Deck containing name, description, view, study, delete buttons */
 function HomeDeckCard({ deck, deleteDeckHandler}) {
     /*Home path: "/" */
-  /*for this deck, checks which cards out of all cards have the deck id the same as this decks id - then returns the length of that array */  
 
-    const {url} = useRouteMatch();
+  const {url} = useRouteMatch();
 
   const card = (
     <div className="card">

@@ -21,7 +21,7 @@ function Layout() {
     setDecks([]);
     const abortController = new AbortController();
 
-    /*Make API call */
+    /*Make API call to laod Decks data */
     async function loadDecks() {
       try {
         const decks = await listDecks(abortController.signal)
@@ -38,7 +38,7 @@ function Layout() {
 
 
 
-/*Deletes deck after user confirmation. Passed to HomeDeckCard buttons */
+/*Deletes deck after user confirmation. Passed to HomeDeckCard buttons in the "Deck" component*/
   const deleteDeckHandler = async (deckIdToDelete) => {
 
     if(window.confirm(`Delete this deck? You will not be able to recover it.`)) {
@@ -61,7 +61,7 @@ function Layout() {
 
 
 
-  /*Returning content to be viewed, after decks is loaded from API*/
+  /*Layout component returns the Home, CreateDeck, or Decks View after fetching deck data from the API */
   if (decks) {
     return (
       <>
