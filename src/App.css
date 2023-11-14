@@ -1,6 +1,17 @@
+header {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 800;
+}
+
+.jumbotron {
+    background-color: #023047;
+}
+
 main {
     padding: 0 10%;
+    font-family: 'Open Sans'
 }
+
 
 .card-wrapper {
     display: flex;
@@ -21,6 +32,7 @@ main {
     flex: 1;
     margin: 10px;
 }
+
 
 .card-header-wrapper {
     display: flex;
@@ -54,4 +66,11 @@ input, textarea {
 
 form button {
     margin-right: 5px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Kdam+Thmor+Pro&family=VT323&display=swap');
+body {
+  --bs-font-sans-serif: 'Kdam Thmor Pro', sans-serif;
+  --bs-body-font-family: var(--bs-font-sans-serif);
+  --bs-font-monospace: 'VT323', monospace;
 }
