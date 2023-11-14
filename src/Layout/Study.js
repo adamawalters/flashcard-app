@@ -8,7 +8,7 @@ import {
 function Study({deck}) {
   /*Path: /decks/:deckId/study */
   /*Summary: gets deck from URL & API call & lets students study each card in the deck. Front or back is managed via state. Then restarts the program or goes home.  */
-  /*Index is used to move between the cards within the deck - state is updated by event handlers. Initially set to 0*/
+  /*Index state is used to move between the cards within the deck, and is updated by the nextBtn handler. Initially set to 0*/
   const [index, setIndex] = useState(0);
 
   /*This state determines whether the front or back of card is shown, and is togged by event handlers. Set to true initially so front is shown */
@@ -18,7 +18,7 @@ function Study({deck}) {
   const history = useHistory();
 
 
-  /*Updates the card index when user clicks next. If at the end, displays a message and restarts the deck or goes home */
+  /*Updates the card index when user clicks next - leveraged on the back of each card. If at the end, displays a message and restarts the deck or goes home */
   const nextBtnHandler = () => {
     /*If we are at the last card, show popup to restart deck. */
     if (index === deck.cards.length - 1) {

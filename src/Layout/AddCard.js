@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   useParams,
   Link,
 } from "react-router-dom/cjs/react-router-dom.min";
-import { createCard, readDeck } from "../utils/api";
+import { createCard } from "../utils/api";
 import CardForm from "./CardForm";
 
 function AddCard({ deck, toggleDeckUpdate }) {
@@ -37,7 +37,7 @@ function AddCard({ deck, toggleDeckUpdate }) {
         toggleDeckUpdate((currentValue) => !currentValue);
       } catch (error) {
         if (error.name !== "AbortError") {
-          throw error;
+          console.log(error);
         }
       }
     }

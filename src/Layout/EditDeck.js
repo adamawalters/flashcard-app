@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   useParams,
   Link,
   useHistory,
 } from "react-router-dom/cjs/react-router-dom.min";
-import { updateDeck, readDeck } from "../utils/api";
+import { updateDeck } from "../utils/api";
 
 function EditDeck({deck, setDeck, toggleDeckUpdate}) {
-  /*path: /decks/:deckId/edit */
+  /*Path: /decks/:deckId/edit */
 
-  /*Prefill form state to deck */
+  /*Prefill form state to existing deck */
   const [formData, setFormData] = useState({...deck});
   const { deckId } = useParams();
   const history = useHistory();

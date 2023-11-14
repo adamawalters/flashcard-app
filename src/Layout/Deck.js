@@ -17,21 +17,20 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
   /*This path: /decks/:deckId */
   /*Deck state is at the deck level - home/layout page shows multiple decks*/
   /*Objective: displays details about the deck as well as each card in the deck,and lets users edit details about the deck, delete the deck, edit the cards, add cards, delete cards */
+ /*Deck component has nested routes for: the study, edit, new card, or edit card view */
+
 
   const [deck, setDeck] = useState({});
   const { deckId } = useParams();
   const { url, path } = useRouteMatch();
   const [deckChildUpdate, setDeckChildUpdate] = useState(false);
 
-  /*Set the deck to the deck fetched from the API. Re-usable function for EditCard*/
 
   /*Set the deck to the deck fetched from the API - runs when child edits deck, or when deckID parameter changes*/
   useEffect(() => {
-
     const readDeckFromAPI = () => {
       setDeck({});
       const abortController = new AbortController();
-  
       async function loadDeck() {
         try {
           const deckFromApi = await readDeck(deckId, abortController.signal);
@@ -44,7 +43,7 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
             if(error.message === "404 - Not Found") {
               alert("Not found")
             }
-            //re error;
+            
           }
         }
       }
@@ -78,7 +77,7 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
           await deleteCard(cardIdToDelete, abortController.signal);
         } catch (error) {
           if (error.name !== "AbortError") {
-            throw error;
+            console.log(error.message);
           }
         }
       }
@@ -88,11 +87,9 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
     }
   };
 
-  /*If the API call has updated the deck to a deck from the API (therefore it has an id key) - display the deck */
   if (deck.id) {
     /*This section creates UIs all for cards with the questions & responses */
-
-    /*Create header for the deck view - shows details about the deck */
+    /*Create header for the deck view - shows details about the deck, edit, study, and add cards button */
     const deckHeader = (
       <div className="card border-0">
         <div className="card-body px-0">
@@ -157,6 +154,8 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
       );
     });
 
+    /*Deck component displays the study, edit, new card, or edit card view */
+
     return (
       <Switch>
         <Route exact path={`${path}`}>
@@ -174,7 +173,7 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
           <EditDeck deck={deck} toggleDeckUpdate={setDeckChildUpdate} setDeck={setDeck}/>
         </Route>
         <Route path={`${path}/cards/new`}>
-          <AddCard deck={deck} toggleDeckUpdate={setDeckChildUpdate}/> {/*won't need edit anymore */}
+          <AddCard deck={deck} toggleDeckUpdate={setDeckChildUpdate}/> 
         </Route>
         <Route path={`${path}/cards/:cardId/edit`}>
           <EditCard deck={deck} toggleDeckUpdate={setDeckChildUpdate}/>
