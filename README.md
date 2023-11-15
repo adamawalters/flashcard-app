@@ -1,4 +1,4 @@
-# flashcard-app
+# Flashcard App
 
 This is an app that lets students and teachers create and update flashcards for use as a study tool. 
 
