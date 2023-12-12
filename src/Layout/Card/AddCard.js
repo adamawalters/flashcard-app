@@ -3,7 +3,7 @@ import {
   useParams,
   Link,
 } from "react-router-dom/cjs/react-router-dom.min";
-import { createCard } from "../utils/api";
+import { createCard } from "../../utils/api";
 import CardForm from "./CardForm";
 
 function AddCard({ deck, toggleDeckUpdate }) {

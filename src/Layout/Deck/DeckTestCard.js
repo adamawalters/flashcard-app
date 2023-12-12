@@ -3,7 +3,7 @@ import { Link, useRouteMatch } from "react-router-dom/cjs/react-router-dom.min";
 
 function DeckTestCard({ deleteCardHandler, cardId, front, back }) {
   /*Path: /decks/:deckId */
-  /*This function is run by the <Deck /> component and generates a view for cards within the deck. Each card has a link to its edit page */
+  /*This component is used by the <Deck /> component and generates a view for cards within the deck. Each card has a link to its edit page */
   const { url } = useRouteMatch();
 
   const cardUI = (

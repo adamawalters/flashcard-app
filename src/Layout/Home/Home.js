@@ -13,15 +13,15 @@ function Home({decks, deleteDeckHandler}){
     /*creating create deck button. Links to create deck screen */
     const createDeckBtn = <button className="btn btn-secondary"><Link className="text-reset" to={`${path}decks/new`}>+ Create Deck</Link></button>;
 
-    /* creates card views for each deck in the decks array and puts them into an array*/
-    const deckArray = decks.map((deck, index) => {
+    /* creates card views for each deck in the decks state and puts them into an array*/
+    const deckList = decks.map((deck, index) => {
         return <HomeDeckCard key={index} deck={deck} deleteDeckHandler={()=>deleteDeckHandler(deck.id)}/>
     })
 
     return (
         <main>
             {createDeckBtn}
-            {deckArray}
+            {deckList}
         </main>
     )
 }
