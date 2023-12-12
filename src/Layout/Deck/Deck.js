@@ -3,55 +3,50 @@ import {
   useParams,
   useRouteMatch,
   Link,
-  Switch, 
-  Route
+  Switch,
+  Route,
 } from "react-router-dom/cjs/react-router-dom.min";
-import { deleteCard, readDeck } from "../utils/api";
+import { deleteCard, readDeck } from "../../utils/api";
 import DeckTestCard from "./DeckTestCard";
 import Study from "./Study";
 import EditDeck from "./EditDeck";
-import EditCard from "./EditCard";
-import AddCard from "./AddCard";
+import EditCard from "../Card/EditCard";
+import AddCard from "../Card/AddCard";
 
 function Deck({ deleteDeckHandler, setDeckRerender }) {
   /*This path: /decks/:deckId */
   /*Deck state is at the deck level - home/layout page shows multiple decks*/
   /*Objective: displays details about the deck as well as each card in the deck,and lets users edit details about the deck, delete the deck, edit the cards, add cards, delete cards */
- /*Deck component has nested routes for: the study, edit, new card, or edit card view */
-
+  /*Deck component has nested routes for: the study, edit, new card, or edit card view */
 
   const [deck, setDeck] = useState({});
   const { deckId } = useParams();
   const { url, path } = useRouteMatch();
+  const [error, setError] = useState();
   const [deckChildUpdate, setDeckChildUpdate] = useState(false);
-
 
   /*Set the deck to the deck fetched from the API - runs when child edits deck, or when deckID parameter changes*/
   useEffect(() => {
-    const readDeckFromAPI = () => {
-      setDeck({});
-      const abortController = new AbortController();
-      async function loadDeck() {
-        try {
-          const deckFromApi = await readDeck(deckId, abortController.signal);
-          setDeck(deckFromApi);
-  
-          /*Makes parent (index) re-render once deck has loaded potentially new cards so it will show on index page without refresh */
-          setDeckRerender((currentValue) => !currentValue);
-        } catch (error) {
-          if (error.name !== "AbortError") {
-            if(error.message === "404 - Not Found") {
-              alert("Not found")
-            }
-            
-          }
+    setDeck({});
+    const abortController = new AbortController();
+
+    async function loadDeck() {
+      try {
+        const deckFromApi = await readDeck(deckId, abortController.signal);
+        setDeck(deckFromApi);
+        setDeckRerender((currentValue) => !currentValue);
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          if (error.message.includes("404")) {
+            setError(`Deck ID ${deckId} not found`);
+          } 
+        } else {
+          throw error;
         }
       }
-      loadDeck();
-      return () => abortController.abort();
-    };
-
-    readDeckFromAPI();
+    }
+    loadDeck();
+    return () => abortController.abort();
   }, [deckChildUpdate, deckId, setDeckRerender]);
 
   /* After user confirmation, update state to new deck without card. Then, make API call to delete card from deck*/
@@ -59,19 +54,17 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
     if (
       window.confirm("Delete this card? You will not be able to recover it.")
     ) {
-      /*Create the array of cards without the card to delete */
+      /*Create the array of cards without the card to delete and update the state, then make an API call to remove the ID*/
       const cardsWithoutCard = deck.cards.filter(
         (card) => card.id !== cardIdToDelete
       );
-      /*Set deck state to the current deck with the updated cards array without the deleted card */
       setDeck({ ...deck, cards: cardsWithoutCard });
 
       /*Update parent index */
-      setDeckRerender((currentValue)=> !currentValue)
+      setDeckRerender((currentValue) => !currentValue);
 
       const abortController = new AbortController();
 
-      /*Remove card from the database via API call */
       async function removeCard() {
         try {
           await deleteCard(cardIdToDelete, abortController.signal);
@@ -167,21 +160,25 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
           </main>
         </Route>
         <Route path={`${path}/study`}>
-          <Study deck={deck}/>
+          <Study deck={deck} />
         </Route>
         <Route path={`${path}/edit`}>
-          <EditDeck deck={deck} toggleDeckUpdate={setDeckChildUpdate} setDeck={setDeck}/>
+          <EditDeck
+            deck={deck}
+            toggleDeckUpdate={setDeckChildUpdate}
+            setDeck={setDeck}
+          />
         </Route>
         <Route path={`${path}/cards/new`}>
-          <AddCard deck={deck} toggleDeckUpdate={setDeckChildUpdate}/> 
+          <AddCard deck={deck} toggleDeckUpdate={setDeckChildUpdate} />
         </Route>
         <Route path={`${path}/cards/:cardId/edit`}>
-          <EditCard deck={deck} toggleDeckUpdate={setDeckChildUpdate}/>
+          <EditCard deck={deck} toggleDeckUpdate={setDeckChildUpdate} />
         </Route>
       </Switch>
     );
   }
-  return "Loading";
+  return error ? error : "Loading";
 }
 
 export default Deck;

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import NotFound from "./NotFound";
 import { Switch, Route, useHistory } from "react-router-dom";
-import Home from "./Home";
-import CreateDeck from "./CreateDeck";
-import Deck from "./Deck";
+import Home from "./Home/Home.js";
+import CreateDeck from "./Home/CreateDeck.js";
+import Deck from "./Deck/Deck.js";
 
 import {listDecks, deleteDeck} from "../utils/api/index.js";
 
@@ -13,15 +13,15 @@ function Layout() {
   const [decks, setDecks] = useState([]);
   const history = useHistory();
 
-  /* used so children can toggle re-render of deck*/
+  /*  Used so children can toggle re-render of deck*/
   const [deckRerender, setDeckRerender] = useState(false);
 
-  /* Get DECKS data from the database & set it to the "decks" state.*/
+  /* Get decks data from the database & set it to the "decks" state.*/
   useEffect(() => {
     setDecks([]);
     const abortController = new AbortController();
 
-    /*Make API call to laod Decks data */
+    /*Make API call to load decks data */
     async function loadDecks() {
       try {
         const decks = await listDecks(abortController.signal)
@@ -33,7 +33,7 @@ function Layout() {
 
     loadDecks();
 
-    return () => abortController.abort(); /*Clean up function that runs before a new useEffect is called */
+    return () => abortController.abort(); 
   }, [deckRerender]);
 
 
@@ -43,13 +43,13 @@ function Layout() {
 
     if(window.confirm(`Delete this deck? You will not be able to recover it.`)) {
 
-      /*create new deck array without the deck to be deleted  */
+      /*Create new deck array without the deck to be deleted  */
       const newDecksPostDeletion = decks.filter((deck) => deck.id !== deckIdToDelete);
 
-      /*set state to the new state array post deletion */
+      /* Set state to the new state array post deletion */
       setDecks(newDecksPostDeletion);
 
-      /* deletes deck from database using API call*/
+      /* Deletes deck from database using API call*/
       const abortController = new AbortController();
       await deleteDeck(deckIdToDelete, abortController.signal);
       setDeckRerender((currentValue)=>!currentValue)
@@ -69,7 +69,7 @@ function Layout() {
         <div className="container">
           <Switch>
             <Route exact path="/">
-              {/*Home needs decks display the decks and to calculate the cardlength. Also needs delete deck handler (used by HomeDeckCard) */}
+              {/*Home needs decks to display the decks and to calculate the cardlength. Also needs delete deck handler (used by HomeDeckCard) */}
               <Home decks={decks} deleteDeckHandler={deleteDeckHandler}/>
             </Route>
             <Route path="/decks/new">
