@@ -1,6 +1,10 @@
-# Flashcard App
+# FlipFlash - Flashcard App
 
-This is an app that lets students and teachers create and update flashcards for use as a study tool. 
+This is a web app that lets students and teachers create and update flashcards for use as a study tool. It is deployed [on Vercel](https://flashcard-app-wine-nine.vercel.app/). Please note - *the server may take a minute to boot up*. 
+
+The front-end is created using React (leveraging React Router) and the flashcard data is stored in a JSON server. The front-end sends CRUD requests to the server to create, update, and delete decks and flashcards within the decs. 
+
+The styling utilizes CSS Bootstrap and some custom CSS. 
 
 ## Structure
 
@@ -11,19 +15,25 @@ This is an app that lets students and teachers create and update flashcards for 
 5. There is a study view where users can go through cards in decks one by one
 
 ## Nested Routing
-The Index screen contains the following components:
+The Index screen contains the following nested components:
 1. Home (default view)
 2. Decks
 3. Not Found
 4. Header (present above all routes)
 
-The Decks screen contains the following components: 
+The Decks screen contains the following nested components: 
 1. Deck (default view): contains "Deck Test Card" component
 2. Study 
 4. Add Card: contains CardForm component
-5. Edit Card: contains CardForm component
+5. Edit Card: contains the CardForm Component
+6. The Add/Edit Cards share the "CardForm" component but use different event handlers for submission. 
+
 
 The Home screen contains the following components:
 1. HomeDeckCard
 
-The Add/Edit Cards share the "CardForm" component but use different event handlers for submission. 
+## Backend
+1. The backend is a simple JSON server
+
+
+
