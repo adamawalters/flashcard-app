@@ -21,15 +21,12 @@ function EditDeck({deck, setDeck, toggleDeckUpdate}) {
 
   
   /*Event handler runs when updated deck data is submitted. Posts to server and goes to deck page. Deck state updated to form.  */
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const abortController = new AbortController();
     
-    async function makeDeck() {
         try{
-            const response = await updateDeck(formData, abortController.signal);
+            const response = await updateDeck(formData);
             setDeck({...formData});
-            //setFormData({initialFormData})
             const id = response.id;
              /*Call for re-render of deck in parent*/
             toggleDeckUpdate((currentValue) => !currentValue)
@@ -39,9 +36,6 @@ function EditDeck({deck, setDeck, toggleDeckUpdate}) {
                 throw Error;
             }
         }
-    }
-    makeDeck();
-    return () => abortController.abort();
   }
   
 
