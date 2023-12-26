@@ -9,19 +9,19 @@ import Deck from "./Deck/Deck.js";
 import {listDecks, deleteDeck} from "../utils/api/index.js";
 
 function Layout() {
+    /* Objective: loads all decks from database & creates delete deck event handler */
+    /* Has nested routes for Deck, Create Deck, and Home views */
 
   const [decks, setDecks] = useState([]);
   const history = useHistory();
-
+  
   /*  Used so children can toggle re-render of deck*/
   const [deckRerender, setDeckRerender] = useState(false);
 
-  /* Get decks data from the database & set it to the "decks" state.*/
   useEffect(() => {
     setDecks([]);
     const abortController = new AbortController();
 
-    /*Make API call to load decks data */
     async function loadDecks() {
       try {
         const decks = await listDecks(abortController.signal)
@@ -53,8 +53,6 @@ function Layout() {
   }
 
 
-
-
   /*Layout component returns the Home, CreateDeck, or Decks View after fetching deck data from the API */
   if (decks) {
     return (
@@ -63,14 +61,12 @@ function Layout() {
         <div className="container">
           <Switch>
             <Route exact path="/">
-              {/*Home needs decks to display the decks and to calculate the cardlength. Also needs delete deck handler (used by HomeDeckCard) */}
               <Home decks={decks} deleteDeckHandler={deleteDeckHandler}/>
             </Route>
             <Route path="/decks/new">
               <CreateDeck setDeckRerender={setDeckRerender}/>
             </Route>
             <Route path="/decks/:deckId">
-              {/*Deck also needs deleteDeckHandler as it displays all the cards as well as an option to delete the deck */}
               <Deck deleteDeckHandler={deleteDeckHandler} setDeckRerender={setDeckRerender}/>
             </Route>
             <Route>

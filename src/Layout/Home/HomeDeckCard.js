@@ -3,7 +3,6 @@ import {Link, useRouteMatch} from "react-router-dom";
 
 /* Leveraged by "Home" component. Returns a bootstrap card for each Deck containing name, description, view, study, delete buttons */
 function HomeDeckCard({ deck, deleteDeckHandler}) {
-    /*Home path: "/" */
 
   const {url} = useRouteMatch();
 

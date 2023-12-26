@@ -15,7 +15,6 @@ import AddCard from "../Card/AddCard";
 
 function Deck({ deleteDeckHandler, setDeckRerender }) {
   /*This path: /decks/:deckId */
-  /*Deck state is at the deck level - home/layout page shows multiple decks*/
   /*Objective: displays details about the deck as well as each card in the deck,and lets users edit details about the deck, delete the deck, edit the cards, add cards, delete cards */
   /*Deck component has nested routes for: the study, edit, new card, or edit card view */
 
@@ -69,7 +68,6 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
   };
 
   if (deck.id) {
-    /*This section creates UIs all for cards with the questions & responses */
     /*Create header for the deck view - shows details about the deck, edit, study, and add cards button */
     const deckHeader = (
       <div className="card border-0">
