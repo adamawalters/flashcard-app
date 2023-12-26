@@ -1,10 +1,17 @@
 # FlipFlash - Flashcard App
 
-This is a web app that lets students and teachers create and update flashcards for use as a study tool. It is deployed [on Vercel](https://flashcard-app-wine-nine.vercel.app/). Please note - _the server may take a minute to boot up_. 
+This is a web app that lets students and teachers create and update flashcards for use as a study tool. It is deployed [on Vercel](https://flashcard-app-wine-nine.vercel.app/). Please note - __the server may take a minute to boot up__. 
 
 The front-end is created using React (leveraging React Router) and the flashcard data is stored in a JSON server. The front-end sends CRUD requests to the server to create, update, and delete decks and flashcards within the decs. 
 
 The styling utilizes CSS Bootstrap and some custom CSS. 
+
+
+## Screenshots
+
+
+
+
 
 ## Structure
 
@@ -34,6 +41,13 @@ The Home screen contains the following components:
 
 ## Backend
 1. The backend is a simple JSON server
+
+## To copy
+1. Fork/clone the repository
+2. Run "npm install"
+3. To run server on localhost, edit index.js's REACT_APP_API_BASE_URL to your desired localhost address
+4. To switch between a local & production server based on the environment, create ".env.development" and ".env.production" files that contain the respective REACT_APP_API_BASE_URL values
+5. To create & deploy your own JSON server, follow these instructions: https://chrisdevcode.hashnode.dev/how-to-create-and-deploy-a-json-server
 
 
 
