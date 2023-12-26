@@ -1,6 +1,6 @@
 # FlipFlash - Flashcard App
 
-This is a web app that lets students and teachers create and update flashcards for use as a study tool. It is deployed [on Vercel](https://flashcard-app-wine-nine.vercel.app/). Please note - __the server may take a minute to boot up__. 
+This is a web app that lets students and teachers create and update flashcards for use as a study tool. It is deployed [on Vercel](https://flashcard-app-wine-nine.vercel.app/). __Please note that the server may take a minute to boot up__. 
 
 The front-end is created using React (leveraging React Router) and the flashcard data is stored in a JSON server. The front-end sends CRUD requests to the server to create, update, and delete decks and flashcards within the decs. 
 
@@ -9,7 +9,8 @@ The styling utilizes CSS Bootstrap and some custom CSS.
 
 ## Screenshots
 
-
+Home page
+![image](https://github.com/adamawalters/flashcard-app/blob/main/screenshots/Home%20page.png)
 
 
 
