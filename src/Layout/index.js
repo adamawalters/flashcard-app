@@ -43,15 +43,9 @@ function Layout() {
 
     if(window.confirm(`Delete this deck? You will not be able to recover it.`)) {
 
-      /*Create new deck array without the deck to be deleted  */
       const newDecksPostDeletion = decks.filter((deck) => deck.id !== deckIdToDelete);
-
-      /* Set state to the new state array post deletion */
       setDecks(newDecksPostDeletion);
-
-      /* Deletes deck from database using API call*/
-      const abortController = new AbortController();
-      await deleteDeck(deckIdToDelete, abortController.signal);
+      await deleteDeck(deckIdToDelete);
       setDeckRerender((currentValue)=>!currentValue)
       history.push(`/`);
 
