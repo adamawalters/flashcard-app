@@ -3,37 +3,31 @@ import { useHistory, Link } from "react-router-dom/cjs/react-router-dom.min";
 import { createDeck } from "../../utils/api";
 
 function CreateDeck({setDeckRerender}) {
-  /*path: /decks/new */
+  /*Path: /decks/new */
   /*Objective: Lets users create a  new deck with a form with a deck name & description. Form Data is saved in the state and uploaded to the server on submission. */
 
-  /*This object is used to set the initial formData state and reset the formData post submission */
   const initialFormData = {
     name: "",
     description: "",
   };
 
-  /*History is used to go to the new decks screen after submit, or to go home when cancelling creation */
   const history = useHistory();
 
   const [formData, setFormData] = useState({ ...initialFormData });
 
-  /*Keeps form values in sync with state values when form values change (controlled form)*/
   const handleChange = (event) => {
     setFormData({...formData, [event.target.name] : event.target.value})
   }
 
   /*Activated when form is submitted. Posts the new deck to the server, resets form data, and navigates to decks page */
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const abortController = new AbortController()
 
-    async function makeDeck() {
         try{
-            const response = await createDeck(formData, abortController.signal);
-            /*Essential below to keep form controlled "..." */
+            const response = await createDeck(formData);
+            /*Toggle refresh on home page */
             setFormData({...initialFormData})
             const id = response.id;
-            /*toggle refresh on home page */
             setDeckRerender((currentValue) => !currentValue);
             history.push(`/decks/${id}`);
         } catch(error) {
@@ -42,10 +36,6 @@ function CreateDeck({setDeckRerender}) {
             }
         }
 
-    }
-
-    makeDeck();
-    return () => abortController.abort();
   }
 
 /*Breadcrumb, title and markup created here */

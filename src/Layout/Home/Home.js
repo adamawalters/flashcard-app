@@ -6,14 +6,14 @@ import HomeDeckCard from "./HomeDeckCard"
 function Home({decks, deleteDeckHandler}){
     /*Home path: "/" */
     /*Home accepts decks as a prop from index */
-    /*For each deck in decks, Home will need to render it below the Create Deck Button with "View, Study, Delete"*/
+    /*Objective: For each deck, Home renders it below the Create Deck Button with "View, Study, Delete"*/
 
     const {path} = useRouteMatch();
 
-    /*creating create deck button. Links to create deck screen */
+    /*Create deck button links to create deck screen */
     const createDeckBtn = <button className="btn btn-secondary"><Link className="text-reset" to={`${path}decks/new`}>+ Create Deck</Link></button>;
 
-    /* creates card views for each deck in the decks state and puts them into an array*/
+    /* Creates card views for each deck in the decks state*/
     const deckList = decks.map((deck, index) => {
         return <HomeDeckCard key={index} deck={deck} deleteDeckHandler={()=>deleteDeckHandler(deck.id)}/>
     })

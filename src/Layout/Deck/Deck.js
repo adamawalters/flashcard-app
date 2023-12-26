@@ -15,7 +15,6 @@ import AddCard from "../Card/AddCard";
 
 function Deck({ deleteDeckHandler, setDeckRerender }) {
   /*This path: /decks/:deckId */
-  /*Deck state is at the deck level - home/layout page shows multiple decks*/
   /*Objective: displays details about the deck as well as each card in the deck,and lets users edit details about the deck, delete the deck, edit the cards, add cards, delete cards */
   /*Deck component has nested routes for: the study, edit, new card, or edit card view */
 
@@ -39,7 +38,7 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
         if (error.name !== "AbortError") {
           if (error.message.includes("404")) {
             setError(`Deck ID ${deckId} not found`);
-          } 
+          }
         } else {
           throw error;
         }
@@ -50,38 +49,25 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
   }, [deckChildUpdate, deckId, setDeckRerender]);
 
   /* After user confirmation, update state to new deck without card. Then, make API call to delete card from deck*/
-  const deleteCardHandler = (cardIdToDelete) => {
-    if (
-      window.confirm("Delete this card? You will not be able to recover it.")
-    ) {
+  const deleteCardHandler = async (cardIdToDelete) => {
+    if (window.confirm("Delete this card? You will not be able to recover it.")) {
       /*Create the array of cards without the card to delete and update the state, then make an API call to remove the ID*/
       const cardsWithoutCard = deck.cards.filter(
         (card) => card.id !== cardIdToDelete
       );
       setDeck({ ...deck, cards: cardsWithoutCard });
-
       /*Update parent index */
       setDeckRerender((currentValue) => !currentValue);
 
-      const abortController = new AbortController();
-
-      async function removeCard() {
-        try {
-          await deleteCard(cardIdToDelete, abortController.signal);
-        } catch (error) {
-          if (error.name !== "AbortError") {
-            console.log(error.message);
-          }
-        }
+      try {
+        await deleteCard(cardIdToDelete);
+      } catch (error) {
+        console.log(error.message);
       }
-      removeCard();
-
-      return () => abortController.abort();
     }
   };
 
   if (deck.id) {
-    /*This section creates UIs all for cards with the questions & responses */
     /*Create header for the deck view - shows details about the deck, edit, study, and add cards button */
     const deckHeader = (
       <div className="card border-0">
