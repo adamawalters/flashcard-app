@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import {
-  useParams,
-  Link,
-} from "react-router-dom/cjs/react-router-dom.min";
+import { useParams, Link } from "react-router-dom/cjs/react-router-dom.min";
 import { createCard } from "../../utils/api";
 import CardForm from "./CardForm";
 
@@ -25,27 +22,20 @@ function AddCard({ deck, toggleDeckUpdate }) {
   };
 
   /* When form is submitted, create the card via API call and reset form data */
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const abortController = new AbortController();
 
-    async function makeCard() {
-      try {
-        await createCard(deckId, formData, abortController.signal);
-        setFormData({ ...initialFormData });
-        /*Call for re-render in parent*/
-        toggleDeckUpdate((currentValue) => !currentValue);
-      } catch (error) {
-        if (error.name !== "AbortError") {
-          console.log(error);
-        }
+    try {
+      await createCard(deckId, formData);
+      setFormData({ ...initialFormData });
+      /*Call for re-render in parent*/
+      toggleDeckUpdate((currentValue) => !currentValue);
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        console.log(error);
       }
     }
-
-    makeCard();
-    return () => abortController.abort();
   };
-
 
   const breadcrumb = (
     <nav aria-label="breadcrumb">

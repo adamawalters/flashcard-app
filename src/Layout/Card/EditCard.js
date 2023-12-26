@@ -14,16 +14,12 @@ function EditCard({ deck, toggleDeckUpdate }) {
   /*Gets deckID, cardID from URL */
   const { deckId, cardId } = useParams();
 
-  /*Used for initialization and reset */
-
-  /*set up card state*/
+  /*Set up card state*/
   const [card, setCard] = useState({});
   const history = useHistory();
 
   /*Read Card from API and overwrite blank card when cardId updates*/
   useEffect(() => {
-    /*Read card from API (only if editing existing card) - needs this to pre-fill the card state & form*/
-    const readCardFromAPI = () => {
       setCard({});
       const abortController = new AbortController();
       async function loadCard() {
@@ -38,34 +34,26 @@ function EditCard({ deck, toggleDeckUpdate }) {
       }
       loadCard();
       return () => abortController.abort();
-    };
 
-    readCardFromAPI();
   }, [cardId]);
 
 
   /*Event handler when form is submitted. Post the card to the API (either update or create)  */
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const abortController = new AbortController();
 
-    async function refineCard() {
       try {
-        await updateCard(card, abortController.signal);
+        await updateCard(card);
         history.push(`/decks/${deckId}`);
-        //setFormData({...initialFormData});
         /*Call for re-render in parent*/
         toggleDeckUpdate((currentValue) => !currentValue);
       } catch (error) {
         if (error.name !== "AbortError") {
           throw error;
         }
-      }
+      
     }
 
-    refineCard();
-
-    return () => abortController.abort();
   };
 
   /*Keep card form data up to date with state */

@@ -23,11 +23,10 @@ function CreateDeck({setDeckRerender}) {
   }
 
   /*Activated when form is submitted. Posts the new deck to the server, resets form data, and navigates to decks page */
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const abortController = new AbortController()
+    const abortController = new AbortController();
 
-    async function makeDeck() {
         try{
             const response = await createDeck(formData, abortController.signal);
             /*Essential below to keep form controlled "..." */
@@ -42,9 +41,6 @@ function CreateDeck({setDeckRerender}) {
             }
         }
 
-    }
-
-    makeDeck();
     return () => abortController.abort();
   }
 
