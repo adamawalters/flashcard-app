@@ -39,7 +39,7 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
         if (error.name !== "AbortError") {
           if (error.message.includes("404")) {
             setError(`Deck ID ${deckId} not found`);
-          } 
+          }
         } else {
           throw error;
         }
@@ -50,33 +50,21 @@ function Deck({ deleteDeckHandler, setDeckRerender }) {
   }, [deckChildUpdate, deckId, setDeckRerender]);
 
   /* After user confirmation, update state to new deck without card. Then, make API call to delete card from deck*/
-  const deleteCardHandler = (cardIdToDelete) => {
-    if (
-      window.confirm("Delete this card? You will not be able to recover it.")
-    ) {
+  const deleteCardHandler = async (cardIdToDelete) => {
+    if (window.confirm("Delete this card? You will not be able to recover it.")) {
       /*Create the array of cards without the card to delete and update the state, then make an API call to remove the ID*/
       const cardsWithoutCard = deck.cards.filter(
         (card) => card.id !== cardIdToDelete
       );
       setDeck({ ...deck, cards: cardsWithoutCard });
-
       /*Update parent index */
       setDeckRerender((currentValue) => !currentValue);
 
-      const abortController = new AbortController();
-
-      async function removeCard() {
-        try {
-          await deleteCard(cardIdToDelete, abortController.signal);
-        } catch (error) {
-          if (error.name !== "AbortError") {
-            console.log(error.message);
-          }
-        }
+      try {
+        await deleteCard(cardIdToDelete);
+      } catch (error) {
+        console.log(error.message);
       }
-      removeCard();
-
-      return () => abortController.abort();
     }
   };
 
