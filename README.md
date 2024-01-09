@@ -52,9 +52,9 @@ The Home screen contains the following components:
 
 ## To copy
 1. Fork/clone the repository
-2. Run "npm install"
+2. Run `npm install`
 3. To run server on localhost, edit index.js's REACT_APP_API_BASE_URL to your desired localhost address
-4. To switch between a local & production server based on the environment, create ".env.development" and ".env.production" files that contain the respective REACT_APP_API_BASE_URL values
+4. To switch between a local & production server based on the environment, create `.env.development` and `.env.production` files that contain the respective REACT_APP_API_BASE_URL values
 5. To create & deploy your own JSON server, follow these instructions: https://chrisdevcode.hashnode.dev/how-to-create-and-deploy-a-json-server
 
 
