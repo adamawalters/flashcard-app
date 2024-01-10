@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useReducer } from "react";
 import { useHistory, Link } from "react-router-dom/cjs/react-router-dom.min";
 import { createDeck } from "../../utils/api";
 
@@ -14,6 +14,7 @@ function CreateDeck({setDeckRerender}) {
   const history = useHistory();
 
   const [formData, setFormData] = useState({ ...initialFormData });
+  
 
   const handleChange = (event) => {
     setFormData({...formData, [event.target.name] : event.target.value})

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import {
   useParams,
   Link,
@@ -6,27 +6,37 @@ import {
 } from "react-router-dom/cjs/react-router-dom.min";
 import { updateDeck } from "../../utils/api";
 
+
+function reducer(state, action) {
+  switch(action.type) {
+    case "name":
+      return {...state, name: action.payload}
+    case "description":
+      return {...state, description: action.payload}
+    default:
+      throw new Error("switch statement editDeck reducer")
+  }
+
+}
+
+
 function EditDeck({deck, setDeck, toggleDeckUpdate}) {
   /*Path: /decks/:deckId/edit */
 
   /*Prefill form state to existing deck */
-  const [formData, setFormData] = useState({...deck});
   const { deckId } = useParams();
   const history = useHistory();
 
-  /*Keep form state and input updated*/
-  const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-  };
-
+  /* useReducer - state is set to deck */
+  /* dispatch sends an object to the reducer telling it what part of state to update */
+  const [state, dispatch] = useReducer(reducer, {...deck})
   
   /*Event handler runs when updated deck data is submitted. Posts to server and goes to deck page. Deck state updated to form.  */
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
         try{
-            const response = await updateDeck(formData);
-            setDeck({...formData});
+            const response = await updateDeck(state);
+            setDeck({...state});
             const id = response.id;
              /*Call for re-render of deck in parent*/
             toggleDeckUpdate((currentValue) => !currentValue)
@@ -65,8 +75,8 @@ function EditDeck({deck, setDeck, toggleDeckUpdate}) {
         name="name"
         type="text"
         placeholder="Deck Name"
-        value={formData.name}
-        onChange={handleChange}
+        value={state.name}
+        onChange={(e) => dispatch({type: "name", payload: e.target.value})}
         required
       ></input>
       <label htmlFor="description">Description</label>
@@ -74,8 +84,8 @@ function EditDeck({deck, setDeck, toggleDeckUpdate}) {
         id="description"
         name="description"
         placeholder="Brief description of deck"
-        value={formData.description}
-        onChange={handleChange}
+        value={state.description}
+        onChange={(e) => dispatch({type: "description", payload: e.target.value})}
         required
       ></textarea>
       <button
